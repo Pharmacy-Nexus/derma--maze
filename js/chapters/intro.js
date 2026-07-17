@@ -1,0 +1,763 @@
+
+(() => {
+  'use strict';
+
+  const STORAGE_KEY = 'dermaMazeIntroProgressV1';
+  const SESSION_SEED_KEY = 'dermaMazeIntroSeed';
+  const questions = window.INTRO_QUESTIONS || [];
+  const topics = window.INTRO_TOPICS || [];
+
+  const copy = {
+    ar: {
+      'nav.home':'الرئيسية','nav.topics':'الموضوعات','nav.questions':'بنك الأسئلة','nav.results':'النتائج','nav.book':'الكتاب',
+      'hero.title':'من طبقات الجلد إلى وصف الآفة.<br><strong>اتعلم تشوف قبل ما تشخّص.</strong>',
+      'hero.text':'صفحة تأسيسية تجمع 45 سؤالًا ثنائي اللغة في تركيب الجلد وطبقات البشرة والآفات الأولية والثانوية، مع تدريب بصري مكثف.',
+      'hero.start':'ابدأ التدريب','hero.explore':'استكشف الموضوعات','hero.q':'سؤالًا','hero.t':'موضوعًا','hero.m':'أنماط',
+      'topics.title':'قسّم الفصل.<br>واتقن كل موضوع لوحده.','topics.text':'كل بطاقة تفتح تدريب الموضوع مباشرة، وتوضح عدد الأسئلة وأنواعها مع Clinical Pearl سريعة تساعدك تبدأ من النقطة الصح.',
+      'path.title':'ذاكر بطريقتك.<br>مش بطريقة واحدة.','path.text':'ابدأ من Topic محدد، اختبر نفسك في عشرة أسئلة عشوائية، أو ادخل امتحان الفصل الكامل. ترتيب الاختيارات يتغير تلقائيًا حتى لا تحفظ نمط الإجابة.',
+      'path.studyTitle':'تعلّم بعد كل سؤال','path.studyText':'الإجابة والتفسير والاستدلال الشكلي يظهرون فورًا.','path.studyCta':'ابدأ Study Mode',
+      'path.randomTitle':'تحدي سريع من 10','path.randomText':'عشرة أسئلة عشوائية من الفلاتر المختارة أو من الفصل كله.','path.randomCta':'ابدأ Random 10',
+      'path.examTitle':'امتحان 45 سؤالًا','path.examText':'الإجابات لا تظهر حتى تنهي الجلسة وتشاهد تحليل الأداء.','path.examCta':'ابدأ Full Exam',
+      'bank.title':'فلتر السؤال.<br>وبعدين ركّز في القرار.','bank.text':'اختار الموضوع والنوع والصعوبة. يمكنك البحث بالكلمة، حفظ الأسئلة، واستكمال تقدمك لاحقًا من نفس الجهاز.',
+      'filter.study':'Study','filter.studySub':'حل وتعلّم فورًا','filter.exam':'Exam','filter.examSub':'الحل في النهاية',
+      'filter.topic':'الموضوع','filter.type':'نوع السؤال','filter.difficulty':'الصعوبة','filter.search':'بحث','filter.apply':'ابدأ المجموعة','filter.random':'Random 10','filter.bookmarks':'المحفوظة',
+      'session.label':'CURRENT SESSION','session.score':'النتيجة','session.answered':'تمت الإجابة','session.correct':'إجابات صحيحة','session.saved':'أسئلة محفوظة','session.reset':'إعادة المجموعة الحالية','session.resetAll':'ابدأ الفصل من الصفر',
+      'session.note':'يُحفظ تقدمك على هذا الجهاز. هذا الفصل مخصص لتأسيس التشريح والمصطلحات المورفولوجية.',
+      'question.zoom':'تكبير الصورة','question.savedAnswer':'تم حفظ إجابتك. سيظهر التصحيح عند إنهاء مجموعة الامتحان.','question.previous':'السابق','question.skip':'تخطي','question.next':'التالي',
+      'empty.title':'مفيش أسئلة مطابقة للفلاتر','empty.text':'غيّر البحث أو اختار All في أحد الفلاتر وابدأ المجموعة من جديد.',
+      'finish.review':'راجع الإجابات','finish.restart':'ابدأ من جديد',
+      'results.title':'اعرف إنت قوي فين.<br>ومحتاج تراجع إيه.','results.text':'النتائج تتحدث تلقائيًا حسب كل Topic. النسبة تعتمد على الأسئلة التي أجبت عنها، وليس على إجمالي أسئلة الموضوع.',
+      'results.overall':'OVERALL SCORE','results.coverage':'COVERAGE','results.strongest':'STRONGEST TOPIC','results.review':'REVIEW NEXT',
+      'next.previous':'← خريطة الفصول','next.next':'الفصل التالي →',
+      'footer.disclaimer':'بنك أسئلة تعليمي لتأسيس تركيب الجلد ووصف الآفات الجلدية باللغة السريرية الصحيحة.',
+      allTopics:'كل الموضوعات', allTypes:'كل الأنواع', allDifficulties:'كل المستويات',
+      typeMCQ:'MCQ',typeCase:'Clinical Case',typeTreatment:'Treatment',typeImage:'Image-Based',
+      diffEasy:'Easy',diffMedium:'Medium',diffHard:'Hard',
+      questionsWord:'سؤال', answeredWord:'تمت الإجابة', savedWord:'محفوظ',
+      startTopic:'ابدأ أسئلة الموضوع', clinicalPearl:'MORPHOLOGY PEARL',
+      correct:'إجابة صحيحة', incorrect:'مش أفضل إجابة', correctAnswer:'الإجابة الصحيحة',
+      examComplete:'انتهت المجموعة 👏', studyComplete:'خلصت المجموعة 👏',
+      examCompleteText:'شاهد النتيجة، ثم راجع الأسئلة لتظهر الإجابات والتفسيرات.',
+      studyCompleteText:'تقدر تراجع نتيجتك حسب الموضوع أو تبدأ مجموعة جديدة.',
+      noAnswers:'لم تتم الإجابة على أي سؤال بعد.',
+      filterSession:'مجموعة مفلترة', randomSession:'تحدي عشوائي', fullSession:'الامتحان الكامل', bookmarksSession:'الأسئلة المحفوظة',
+      reviewAnswers:'مراجعة الإجابات',
+      resetConfirm:'هل تريد مسح إجابات المجموعة الحالية والبدء من جديد؟',
+      resetAllConfirm:'هل تريد مسح كل الإجابات والتقدم المحفوظ في فصل مقدمة الأمراض الجلدية والبدء من الصفر؟ ستظل الأسئلة المحفوظة في المفضلة كما هي.',
+      bookmarksEmpty:'لا توجد أسئلة محفوظة حتى الآن.',
+      strongestEmpty:'—', reviewEmpty:'—',
+      resultAnswered:'مجاب', resultCorrect:'صحيح'
+    },
+    en: {
+      'nav.home':'Home','nav.topics':'Topics','nav.questions':'Question bank','nav.results':'Results','nav.book':'Book',
+      'hero.title':'From skin layers to lesion language.<br><strong>Learn to see before you diagnose.</strong>',
+      'hero.text':'A foundation chapter with 45 bilingual questions covering skin anatomy, epidermal layers, primary and secondary lesions, and visual identification.',
+      'hero.start':'Start practicing','hero.explore':'Explore topics','hero.q':'Questions','hero.t':'Topics','hero.m':'Modes',
+      'topics.title':'Break down the chapter.<br>Master one topic at a time.','topics.text':'Each card opens topic-specific practice and shows question volume, formats, and a quick clinical pearl.',
+      'path.title':'Study your way.<br>Not just one way.','path.text':'Choose one topic, take a random ten-question challenge, or enter the complete chapter exam. Options are automatically shuffled to remove answer-pattern memorization.',
+      'path.studyTitle':'Learn after every question','path.studyText':'The answer, explanation, and morphological reasoning appear immediately.','path.studyCta':'Start Study Mode',
+      'path.randomTitle':'Quick random ten','path.randomText':'Ten random questions from the selected filters or the entire chapter.','path.randomCta':'Start Random 10',
+      'path.examTitle':'Full 45-question exam','path.examText':'Answers remain hidden until the session is completed and reviewed.','path.examCta':'Start Full Exam',
+      'bank.title':'Filter the question.<br>Then focus on the decision.','bank.text':'Choose the topic, format, and difficulty. Search by keyword, save questions, and continue your progress later on the same device.',
+      'filter.study':'Study','filter.studySub':'Answer and learn now','filter.exam':'Exam','filter.examSub':'Review at the end',
+      'filter.topic':'Topic','filter.type':'Question type','filter.difficulty':'Difficulty','filter.search':'Search','filter.apply':'Start set','filter.random':'Random 10','filter.bookmarks':'Saved',
+      'session.label':'CURRENT SESSION','session.score':'Score','session.answered':'Answered','session.correct':'Correct','session.saved':'Saved questions','session.reset':'Reset current set','session.resetAll':'Restart chapter from zero',
+      'session.note':'Progress is stored on this device. This chapter builds anatomical and morphological foundations.',
+      'question.zoom':'Enlarge image','question.savedAnswer':'Your answer is saved. Correction will appear when the exam set is completed.','question.previous':'Previous','question.skip':'Skip','question.next':'Next',
+      'empty.title':'No questions match these filters','empty.text':'Change the search or choose All in a filter, then start the set again.',
+      'finish.review':'Review answers','finish.restart':'Start again',
+      'results.title':'See your strengths.<br>Know what to review.','results.text':'Performance updates automatically by topic. Percentages are based on answered questions, not the full topic total.',
+      'results.overall':'OVERALL SCORE','results.coverage':'COVERAGE','results.strongest':'STRONGEST TOPIC','results.review':'REVIEW NEXT',
+      'next.previous':'← Chapter map','next.next':'Next chapter →',
+      'footer.disclaimer':'An educational question bank for mastering skin structure and accurate lesion morphology.',
+      allTopics:'All topics',allTypes:'All formats',allDifficulties:'All levels',
+      typeMCQ:'MCQ',typeCase:'Clinical Case',typeTreatment:'Treatment',typeImage:'Image-Based',
+      diffEasy:'Easy',diffMedium:'Medium',diffHard:'Hard',
+      questionsWord:'questions',answeredWord:'answered',savedWord:'saved',
+      startTopic:'Practice this topic',clinicalPearl:'MORPHOLOGY PEARL',
+      correct:'Correct answer',incorrect:'Not the best answer',correctAnswer:'Correct answer',
+      examComplete:'Set completed 👏',studyComplete:'Set completed 👏',
+      examCompleteText:'View your score, then review the questions to reveal answers and explanations.',
+      studyCompleteText:'Review performance by topic or begin a new set.',
+      noAnswers:'No questions have been answered yet.',
+      filterSession:'Filtered set',randomSession:'Random challenge',fullSession:'Full chapter exam',bookmarksSession:'Saved questions',
+      reviewAnswers:'Answer review',
+      resetConfirm:'Clear the answers in the current session and start again?',
+      resetAllConfirm:'Clear every answered question and saved progress in the Introduction to Dermatology chapter and restart from zero? Bookmarks will stay saved.',
+      bookmarksEmpty:'No saved questions yet.',
+      strongestEmpty:'—',reviewEmpty:'—',
+      resultAnswered:'answered',resultCorrect:'correct'
+    }
+  };
+
+  const els = {};
+  let state = {
+    mode:'study',
+    filters:{topic:'all',type:'all',difficulty:'all',search:''},
+    bookmarksOnly:false,
+    session:[],
+    sessionKind:'filtered',
+    index:0,
+    answers:{},
+    bookmarks:new Set(),
+    reviewMode:false,
+    completed:false
+  };
+
+  function lang(){ return window.currentDMLang === 'en' ? 'en' : 'ar'; }
+  function t(key){ return copy[lang()][key] ?? key; }
+  function local(obj){ return obj?.[lang()] || obj?.en || ''; }
+
+  function cacheElements(){
+    [
+      'introTopicJump','introTopicGrid','introModeSwitch','introTopicFilter','introTypeFilter','introDifficultyFilter','introSearch',
+      'introApplyFilters','introRandomTen','introBookmarksOnly','introSessionTitle','introSessionCount','introScoreArc','introScorePercent',
+      'introAnsweredCount','introCorrectCount','introSavedCount','introResetSession','introResetAllProgress','introProgressBar','introQuestionCard',
+      'introQuestionId','introQuestionType','introQuestionDifficulty','introQuestionSource','introBookmarkBtn','introQuestionTopic',
+      'introQuestionCounter','introQuestionImageWrap','introQuestionImage','introZoomImage','introQuestionText','introOptions',
+      'introFeedback','introFeedbackIcon','introFeedbackTitle','introExplanation','introReasoning','introExamMessage',
+      'introPrevQuestion','introSkipQuestion','introNextQuestion','introEmptyState','introExamFinish','introExamFinishTitle',
+      'introFinishPercent','introFinishDetail','introFinishText','introReviewExam','introRestartExam','introOverallScore',
+      'introCoverage','introStrongest','introReviewNext','introResultsGrid','introImageDialog','introCloseImage','introDialogImage',
+      'randomTenHero','fullExamHero'
+    ].forEach(id => els[id] = document.getElementById(id));
+  }
+
+  function loadProgress(){
+    try{
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      state.answers = saved.answers && typeof saved.answers === 'object' ? saved.answers : {};
+      state.bookmarks = new Set(Array.isArray(saved.bookmarks) ? saved.bookmarks : []);
+    }catch{
+      state.answers = {};
+      state.bookmarks = new Set();
+    }
+  }
+
+  function saveProgress(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      answers:state.answers,
+      bookmarks:[...state.bookmarks]
+    }));
+  }
+
+  function setStaticTranslations(){
+    document.querySelectorAll('[data-intro-i18n]').forEach(el => {
+      const value = t(el.dataset.introI18n);
+      if(value !== undefined) el.textContent = value;
+    });
+    document.querySelectorAll('[data-intro-i18n-html]').forEach(el => {
+      const value = t(el.dataset.introI18nHtml);
+      if(value !== undefined) el.innerHTML = value;
+    });
+    if(els.introSearch){
+      els.introSearch.placeholder = lang()==='ar' ? 'الجذام، rifampin، ENL، lupus vulgaris...' : 'Leprosy, rifampin, ENL, lupus vulgaris...';
+    }
+  }
+
+  function typeLabel(type){
+    return t({MCQ:'typeMCQ',Case:'typeCase',Treatment:'typeTreatment',Image:'typeImage'}[type] || type);
+  }
+  function difficultyLabel(d){
+    return t({Easy:'diffEasy',Medium:'diffMedium',Hard:'diffHard'}[d] || d);
+  }
+  function topicBySlug(slug){ return topics.find(x => x.slug === slug); }
+
+  function renderTopics(){
+    els.introTopicJump.innerHTML = topics.map((topic,index) =>
+      `<button data-jump="${topic.slug}">${String(index+1).padStart(2,'0')} · ${escapeHtml(local(topic.title))}</button>`
+    ).join('');
+
+    els.introTopicGrid.innerHTML = topics.map((topic,index) => {
+      const typeBadges = Object.entries(topic.types)
+        .map(([kind,count]) => `<span>${escapeHtml(typeLabel(kind))} ${count}</span>`).join('');
+      return `<article class="intro-topic-card reveal visible" id="topic-${topic.slug}">
+        <div class="intro-topic-photo">
+          <img src="${topic.image}" alt="${escapeAttr(local(topic.title))}" loading="lazy">
+          <span>${escapeHtml(topic.title.en.toUpperCase())}</span>
+          <b>${String(index+1).padStart(2,'0')}</b>
+        </div>
+        <div class="intro-topic-body">
+          <div class="intro-topic-title-row">
+            <h3>${escapeHtml(local(topic.title))}</h3>
+            <span>${topic.count} ${escapeHtml(t('questionsWord'))}</span>
+          </div>
+          <p>${escapeHtml(local(topic.summary))}</p>
+          <div class="intro-topic-type-row">${typeBadges}</div>
+          <div class="intro-topic-pearl">
+            <small>${escapeHtml(t('clinicalPearl'))}</small>
+            <b>${escapeHtml(local(topic.pearl))}</b>
+          </div>
+          <button class="intro-topic-action" data-start-topic="${topic.slug}">
+            <span>${escapeHtml(t('startTopic'))}</span><b>↗</b>
+          </button>
+        </div>
+      </article>`;
+    }).join('');
+
+    els.introTopicJump.querySelectorAll('[data-jump]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(`topic-${btn.dataset.jump}`);
+        target?.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+    });
+    els.introTopicGrid.querySelectorAll('[data-start-topic]').forEach(btn => {
+      btn.addEventListener('click', () => startTopic(btn.dataset.startTopic));
+    });
+  }
+
+  function renderFilterControls(){
+    const currentTopic = state.filters.topic;
+    const currentType = state.filters.type;
+    const currentDifficulty = state.filters.difficulty;
+
+    els.introTopicFilter.innerHTML =
+      `<option value="all">${escapeHtml(t('allTopics'))}</option>` +
+      topics.map(topic => `<option value="${topic.slug}">${escapeHtml(local(topic.title))} (${topic.count})</option>`).join('');
+    els.introTopicFilter.value = currentTopic;
+
+    const types = ['MCQ','Case','Image'].filter(type => (window.INTRO_STATS.types[type]||0)>0);
+    els.introTypeFilter.innerHTML =
+      `<option value="all">${escapeHtml(t('allTypes'))}</option>` +
+      types.map(type => `<option value="${type}">${escapeHtml(typeLabel(type))} (${window.INTRO_STATS.types[type]||0})</option>`).join('');
+    els.introTypeFilter.value = currentType;
+
+    const diffs = ['Easy','Medium','Hard'];
+    els.introDifficultyFilter.innerHTML =
+      `<option value="all">${escapeHtml(t('allDifficulties'))}</option>` +
+      diffs.map(d => `<option value="${d}">${escapeHtml(difficultyLabel(d))} (${window.INTRO_STATS.difficulties[d]})</option>`).join('');
+    els.introDifficultyFilter.value = currentDifficulty;
+
+    els.introSearch.value = state.filters.search;
+    updateModeButtons();
+    els.introBookmarksOnly.classList.toggle('active',state.bookmarksOnly);
+    const heart = els.introBookmarksOnly.querySelector('span');
+    if(heart) heart.textContent = state.bookmarksOnly ? '♥' : '♡';
+  }
+
+  function updateModeButtons(){
+    els.introModeSwitch.querySelectorAll('[data-mode]').forEach(btn => {
+      btn.classList.toggle('active',btn.dataset.mode === state.mode);
+    });
+  }
+
+  function readControls(){
+    state.filters.topic = els.introTopicFilter.value;
+    state.filters.type = els.introTypeFilter.value;
+    state.filters.difficulty = els.introDifficultyFilter.value;
+    state.filters.search = els.introSearch.value.trim();
+  }
+
+  function normalizedSearch(q){
+    return [
+      q.id,q.topicEn,q.topicAr,q.subtopicEn,q.type,q.difficulty,q.source,
+      q.question.en,q.question.ar,q.explanation.en,q.explanation.ar,q.reasoning.en,q.reasoning.ar,
+      ...q.options.flatMap(o => [o.en,o.ar])
+    ].join(' ').toLocaleLowerCase();
+  }
+
+  function getFilteredPool(){
+    const term = state.filters.search.toLocaleLowerCase();
+    return questions.filter(q => {
+      if(state.bookmarksOnly && !state.bookmarks.has(q.id)) return false;
+      if(state.filters.topic !== 'all' && q.topic !== state.filters.topic) return false;
+      if(state.filters.type !== 'all' && q.type !== state.filters.type) return false;
+      if(state.filters.difficulty !== 'all' && q.difficulty !== state.filters.difficulty) return false;
+      if(term && !normalizedSearch(q).includes(term)) return false;
+      return true;
+    });
+  }
+
+  function getSeed(){
+    let seed = Number(sessionStorage.getItem(SESSION_SEED_KEY));
+    if(!Number.isFinite(seed) || seed <= 0){
+      seed = Math.floor(Math.random()*2147483646)+1;
+      sessionStorage.setItem(SESSION_SEED_KEY,String(seed));
+    }
+    return seed;
+  }
+
+  function hashString(str){
+    let h = 2166136261;
+    for(let i=0;i<str.length;i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h,16777619);
+    }
+    return h >>> 0;
+  }
+
+  function seededRandom(seed){
+    let a = seed >>> 0;
+    return () => {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let r = Math.imul(a ^ a >>> 15,1 | a);
+      r = r + Math.imul(r ^ r >>> 7,61 | r) ^ r;
+      return ((r ^ r >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function shuffled(items,seedText){
+    const arr = [...items];
+    const rand = seededRandom(hashString(seedText));
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(rand()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  function getDisplayOptions(q){
+    return shuffled(q.options,`${getSeed()}-${q.id}`);
+  }
+
+  function startSession({randomLimit=null,forceAll=false,kind='filtered'} = {}){
+    readControls();
+    if(forceAll){
+      state.filters = {topic:'all',type:'all',difficulty:'all',search:''};
+      state.bookmarksOnly = false;
+      renderFilterControls();
+    }
+    let pool = getFilteredPool();
+    if(randomLimit){
+      pool = shuffled(pool,`${Date.now()}-${Math.random()}`).slice(0,randomLimit);
+    }
+    state.session = pool;
+    state.sessionKind = kind;
+    state.index = 0;
+    state.reviewMode = false;
+    state.completed = false;
+    showPractice();
+    renderQuestion();
+    updateSessionSummary();
+    document.getElementById('question-bank')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function startTopic(slug){
+    state.filters.topic = slug;
+    state.filters.type = 'all';
+    state.filters.difficulty = 'all';
+    state.filters.search = '';
+    state.bookmarksOnly = false;
+    state.mode = 'study';
+    renderFilterControls();
+    startSession({kind:'filtered'});
+  }
+
+  function startRandomTen(){
+    readControls();
+    state.mode = 'study';
+    state.bookmarksOnly = false;
+    renderFilterControls();
+    startSession({randomLimit:10,kind:'random'});
+  }
+
+  function startFullExam(){
+    state.mode = 'exam';
+    state.filters = {topic:'all',type:'all',difficulty:'all',search:''};
+    state.bookmarksOnly = false;
+    renderFilterControls();
+    startSession({randomLimit:null,forceAll:true,kind:'full'});
+    state.session = shuffled(state.session,`${Date.now()}-full-exam`);
+    state.index = 0;
+    renderQuestion();
+    updateSessionSummary();
+  }
+
+  function showPractice(){
+    const empty = state.session.length === 0;
+    els.introEmptyState.hidden = !empty;
+    els.introQuestionCard.hidden = empty;
+    els.introExamFinish.hidden = true;
+    if(empty && state.bookmarksOnly){
+      const p = els.introEmptyState.querySelector('p');
+      if(p) p.textContent = t('bookmarksEmpty');
+    }else{
+      const p = els.introEmptyState.querySelector('p');
+      if(p) p.textContent = t('empty.text');
+    }
+  }
+
+  function currentQuestion(){ return state.session[state.index]; }
+
+  function renderQuestion(){
+    if(!state.session.length){
+      showPractice();
+      updateSessionSummary();
+      return;
+    }
+    showPractice();
+    const q = currentQuestion();
+    const answer = state.answers[q.id];
+    const displayOptions = getDisplayOptions(q);
+
+    els.introQuestionId.textContent = q.id;
+    els.introQuestionType.textContent = typeLabel(q.type).toUpperCase();
+    els.introQuestionDifficulty.textContent = difficultyLabel(q.difficulty).toUpperCase();
+    els.introQuestionSource.textContent = q.source;
+    els.introQuestionTopic.textContent = lang()==='ar' ? q.topicAr : q.topicEn.toUpperCase();
+    els.introQuestionCounter.textContent = `${String(state.index+1).padStart(2,'0')} / ${String(state.session.length).padStart(2,'0')}`;
+    els.introQuestionText.textContent = local(q.question);
+    els.introProgressBar.style.width = `${((state.index+1)/state.session.length)*100}%`;
+
+    els.introBookmarkBtn.classList.toggle('saved',state.bookmarks.has(q.id));
+    els.introBookmarkBtn.textContent = state.bookmarks.has(q.id) ? '♥' : '♡';
+
+    if(q.image){
+      els.introQuestionImageWrap.hidden = false;
+      els.introQuestionImage.src = q.image;
+      els.introQuestionImage.alt = `${q.id} ${local(q.question)}`;
+    }else{
+      els.introQuestionImageWrap.hidden = true;
+      els.introQuestionImage.removeAttribute('src');
+    }
+
+    els.introOptions.innerHTML = displayOptions.map((option,index) => `
+      <button class="intro-option" data-letter="${option.letter}">
+        <span>${String.fromCharCode(65+index)}</span>
+        <b>${escapeHtml(option[lang()] || option.en)}</b>
+      </button>
+    `).join('');
+
+    els.introFeedback.className = 'intro-feedback';
+    els.introExamMessage.hidden = true;
+
+    els.introOptions.querySelectorAll('.intro-option').forEach(btn => {
+      btn.addEventListener('click',() => chooseAnswer(btn.dataset.letter));
+    });
+
+    if(answer){
+      if(state.mode === 'study' || state.reviewMode){
+        revealAnswer(q,answer.selected);
+      }else{
+        markExamSelection(answer.selected);
+      }
+    }
+
+    els.introPrevQuestion.disabled = state.index === 0;
+    els.introNextQuestion.disabled = !answer && !state.reviewMode;
+    els.introNextQuestion.querySelector('[data-intro-i18n="question.next"]')?.replaceChildren(
+      document.createTextNode(state.index === state.session.length-1
+        ? (lang()==='ar' ? 'إنهاء المجموعة' : 'Finish set')
+        : t('question.next'))
+    );
+    updateSessionSummary();
+  }
+
+  function chooseAnswer(letter){
+    const q = currentQuestion();
+    if(!q) return;
+    if((state.mode === 'study' || state.reviewMode) && state.answers[q.id]) return;
+
+    state.answers[q.id] = {selected:letter,correct:letter===q.correct,updatedAt:Date.now()};
+    saveProgress();
+
+    if(state.mode === 'study' || state.reviewMode){
+      revealAnswer(q,letter);
+    }else{
+      markExamSelection(letter);
+    }
+    els.introNextQuestion.disabled = false;
+    updateSessionSummary();
+    renderResults();
+  }
+
+  function markExamSelection(letter){
+    els.introOptions.querySelectorAll('.intro-option').forEach(btn => {
+      btn.classList.toggle('selected',btn.dataset.letter === letter);
+    });
+    els.introExamMessage.hidden = false;
+  }
+
+  function revealAnswer(q,selectedLetter){
+    const good = selectedLetter === q.correct;
+    els.introOptions.querySelectorAll('.intro-option').forEach(btn => {
+      btn.disabled = true;
+      if(btn.dataset.letter === q.correct) btn.classList.add('correct');
+      if(btn.dataset.letter === selectedLetter && !good) btn.classList.add('wrong');
+    });
+    els.introFeedback.className = `intro-feedback show ${good ? 'good' : 'bad'}`;
+    els.introFeedbackIcon.textContent = good ? '✓' : '×';
+    els.introFeedbackTitle.textContent = good ? t('correct') : `${t('incorrect')} — ${t('correctAnswer')}: ${correctOptionText(q)}`;
+    els.introExplanation.textContent = local(q.explanation);
+    els.introReasoning.textContent = local(q.reasoning);
+    els.introExamMessage.hidden = true;
+  }
+
+  function correctOptionText(q){
+    const option = q.options.find(o => o.letter === q.correct);
+    return option ? (option[lang()] || option.en) : q.correct;
+  }
+
+  function navigate(delta){
+    if(!state.session.length) return;
+    const next = state.index + delta;
+    if(next < 0) return;
+    if(next >= state.session.length){
+      finishSession();
+      return;
+    }
+    state.index = next;
+    renderQuestion();
+    els.introQuestionCard.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  function skipQuestion(){
+    if(state.index >= state.session.length-1){
+      finishSession();
+    }else{
+      state.index++;
+      renderQuestion();
+    }
+  }
+
+  function finishSession(){
+    state.completed = true;
+    const result = sessionStats();
+    els.introQuestionCard.hidden = true;
+    els.introEmptyState.hidden = true;
+    els.introExamFinish.hidden = false;
+    els.introExamFinishTitle.textContent = state.mode === 'exam' ? t('examComplete') : t('studyComplete');
+    els.introFinishPercent.textContent = `${result.percent}%`;
+    els.introFinishDetail.textContent = `${result.correct} / ${result.answered} ${t('answeredWord')}`;
+    els.introFinishText.textContent = state.mode === 'exam' ? t('examCompleteText') : t('studyCompleteText');
+    updateSessionSummary();
+    renderResults();
+  }
+
+  function reviewSession(){
+    state.reviewMode = true;
+    state.index = 0;
+    state.completed = false;
+    els.introExamFinish.hidden = true;
+    els.introQuestionCard.hidden = false;
+    renderQuestion();
+  }
+
+  function restartSession(){
+    clearSessionAnswers();
+    state.index = 0;
+    state.reviewMode = false;
+    state.completed = false;
+    showPractice();
+    renderQuestion();
+  }
+
+  function clearSessionAnswers(){
+    state.session.forEach(q => delete state.answers[q.id]);
+    saveProgress();
+    renderResults();
+    updateSessionSummary();
+  }
+
+  function resetCurrentSession(){
+    if(!state.session.length) return;
+    if(window.confirm(t('resetConfirm'))){
+      restartSession();
+    }
+  }
+
+  function resetAllProgress(){
+    if(!window.confirm(t('resetAllConfirm'))) return;
+    state.answers = {};
+    state.index = 0;
+    state.examSubmitted = false;
+    state.reviewing = false;
+    saveProgress();
+    renderResults();
+    updateSessionSummary();
+    renderQuestion();
+    window.scrollTo({top:document.getElementById('question-bank')?.offsetTop || 0,behavior:'smooth'});
+  }
+
+  function toggleBookmark(){
+    const q = currentQuestion();
+    if(!q) return;
+    if(state.bookmarks.has(q.id)) state.bookmarks.delete(q.id);
+    else state.bookmarks.add(q.id);
+    saveProgress();
+    els.introBookmarkBtn.classList.toggle('saved',state.bookmarks.has(q.id));
+    els.introBookmarkBtn.textContent = state.bookmarks.has(q.id) ? '♥' : '♡';
+    updateSessionSummary();
+    renderResults();
+    if(state.bookmarksOnly && !state.bookmarks.has(q.id)){
+      state.session = getFilteredPool();
+      state.index = Math.min(state.index,Math.max(0,state.session.length-1));
+      renderQuestion();
+    }
+  }
+
+  function sessionStats(){
+    const answered = state.session.filter(q => state.answers[q.id]);
+    const correct = answered.filter(q => state.answers[q.id].selected === q.correct);
+    return {
+      answered:answered.length,
+      correct:correct.length,
+      percent:answered.length ? Math.round(correct.length/answered.length*100) : 0
+    };
+  }
+
+  function sessionTitle(){
+    if(state.reviewMode) return t('reviewAnswers');
+    if(state.sessionKind === 'random') return t('randomSession');
+    if(state.sessionKind === 'full') return t('fullSession');
+    if(state.bookmarksOnly) return t('bookmarksSession');
+    if(state.filters.topic !== 'all') return local(topicBySlug(state.filters.topic)?.title);
+    return t('filterSession');
+  }
+
+  function updateSessionSummary(){
+    const s = sessionStats();
+    els.introSessionTitle.textContent = sessionTitle();
+    els.introSessionCount.textContent = `${state.session.length} ${t('questionsWord')}`;
+    els.introAnsweredCount.textContent = s.answered;
+    els.introCorrectCount.textContent = s.correct;
+    els.introSavedCount.textContent = state.bookmarks.size;
+    els.introScorePercent.textContent = `${s.percent}%`;
+    els.introScoreArc.style.strokeDashoffset = String(314-(314*s.percent/100));
+  }
+
+  function allStats(){
+    const answered = questions.filter(q => state.answers[q.id]);
+    const correct = answered.filter(q => state.answers[q.id].selected === q.correct);
+    return {
+      answered:answered.length,
+      correct:correct.length,
+      percent:answered.length ? Math.round(correct.length/answered.length*100) : 0
+    };
+  }
+
+  function topicStats(topic){
+    const set = questions.filter(q => q.topic === topic.slug);
+    const answered = set.filter(q => state.answers[q.id]);
+    const correct = answered.filter(q => state.answers[q.id].selected === q.correct);
+    return {
+      total:set.length,
+      answered:answered.length,
+      correct:correct.length,
+      percent:answered.length ? Math.round(correct.length/answered.length*100) : 0
+    };
+  }
+
+  function renderResults(){
+    const overall = allStats();
+    const stats = topics.map(topic => ({topic,...topicStats(topic)}));
+    const active = stats.filter(x => x.answered > 0);
+    const strongest = active.length ? [...active].sort((a,b) => b.percent-a.percent || b.answered-a.answered)[0] : null;
+    const review = active.length ? [...active].sort((a,b) => a.percent-b.percent || b.answered-a.answered)[0] : null;
+
+    els.introOverallScore.textContent = `${overall.percent}%`;
+    els.introCoverage.textContent = `${overall.answered} / ${questions.length}`;
+    els.introStrongest.textContent = strongest ? local(strongest.topic.title) : t('strongestEmpty');
+    els.introReviewNext.textContent = review ? local(review.topic.title) : t('reviewEmpty');
+
+    els.introResultsGrid.innerHTML = stats.map(item => `
+      <article class="intro-result-card" style="--pct:${item.percent}%">
+        <div><span>${escapeHtml(local(item.topic.title))}</span><b>${item.percent}%</b></div>
+        <i></i>
+        <small>${item.answered} / ${item.total} ${escapeHtml(t('resultAnswered'))} · ${item.correct} ${escapeHtml(t('resultCorrect'))}</small>
+      </article>
+    `).join('');
+  }
+
+  function toggleBookmarksOnly(){
+    state.bookmarksOnly = !state.bookmarksOnly;
+    state.filters.topic = 'all';
+    state.filters.type = 'all';
+    state.filters.difficulty = 'all';
+    state.filters.search = '';
+    renderFilterControls();
+    startSession({kind:'filtered'});
+  }
+
+  function openImage(){
+    const q = currentQuestion();
+    if(!q?.image) return;
+    els.introDialogImage.src = q.image;
+    els.introImageDialog.showModal();
+  }
+
+  function readUrlParams(){
+    const params = new URLSearchParams(location.search);
+    const topic = params.get('topic');
+    const type = params.get('type');
+    const difficulty = params.get('difficulty');
+    const mode = params.get('mode');
+    if(topicBySlug(topic)) state.filters.topic = topic;
+    if(['MCQ','Case','Treatment','Image'].includes(type)) state.filters.type = type;
+    if(['Easy','Medium','Hard'].includes(difficulty)) state.filters.difficulty = difficulty;
+    if(['study','exam'].includes(mode)) state.mode = mode;
+  }
+
+  function bindEvents(){
+    els.introModeSwitch.querySelectorAll('[data-mode]').forEach(btn => {
+      btn.addEventListener('click',() => {
+        state.mode = btn.dataset.mode;
+        state.reviewMode = false;
+        updateModeButtons();
+        renderQuestion();
+      });
+    });
+    els.introApplyFilters.addEventListener('click',() => {
+      state.bookmarksOnly = false;
+      startSession({kind:'filtered'});
+      renderFilterControls();
+    });
+    els.introRandomTen.addEventListener('click',startRandomTen);
+    els.randomTenHero?.addEventListener('click',startRandomTen);
+    els.fullExamHero?.addEventListener('click',startFullExam);
+    document.querySelectorAll('[data-start-mode="study"]').forEach(btn => btn.addEventListener('click',() => {
+      state.mode = 'study';
+      renderFilterControls();
+      startSession({kind:'filtered'});
+    }));
+    els.introBookmarksOnly.addEventListener('click',toggleBookmarksOnly);
+    els.introPrevQuestion.addEventListener('click',() => navigate(-1));
+    els.introNextQuestion.addEventListener('click',() => navigate(1));
+    els.introSkipQuestion.addEventListener('click',skipQuestion);
+    els.introBookmarkBtn.addEventListener('click',toggleBookmark);
+    els.introResetSession.addEventListener('click',resetCurrentSession);
+    els.introResetAllProgress?.addEventListener('click',resetAllProgress);
+    els.introReviewExam.addEventListener('click',reviewSession);
+    els.introRestartExam.addEventListener('click',restartSession);
+    els.introZoomImage.addEventListener('click',openImage);
+    els.introQuestionImage.addEventListener('click',openImage);
+    els.introCloseImage.addEventListener('click',() => els.introImageDialog.close());
+    els.introImageDialog.addEventListener('click',e => { if(e.target === els.introImageDialog) els.introImageDialog.close(); });
+    els.introSearch.addEventListener('keydown',e => {
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        state.bookmarksOnly = false;
+        startSession({kind:'filtered'});
+      }
+    });
+    window.addEventListener('dm-language-change',() => {
+      setStaticTranslations();
+      renderTopics();
+      renderFilterControls();
+      renderQuestion();
+      renderResults();
+      updateSessionSummary();
+    });
+  }
+
+  function escapeHtml(value){
+    return String(value ?? '').replace(/[&<>"']/g,ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+  }
+  function escapeAttr(value){ return escapeHtml(value); }
+
+  function init(){
+    cacheElements();
+    loadProgress();
+    readUrlParams();
+    setStaticTranslations();
+    renderTopics();
+    renderFilterControls();
+    bindEvents();
+    state.session = getFilteredPool();
+    renderQuestion();
+    renderResults();
+    updateSessionSummary();
+  }
+
+  document.addEventListener('DOMContentLoaded',init);
+})();

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Derma-Maze mark">
+  <rect width="64" height="64" rx="16" fill="#07171c"/>
+  <rect x="9" y="9" width="46" height="46" rx="13" fill="none" stroke="#f4bd22" stroke-width="2" opacity=".38"/>
+  <path d="M18 18h28v28H18V25h20v13H26v-6h6" fill="none" stroke="#f4bd22" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="18" cy="25" r="2.4" fill="#f4bd22"/>
+  <circle cx="32" cy="32" r="2.4" fill="#fff4c7"/>
+</svg>

@@ -1,0 +1,28 @@
+{
+  "version": "1.0-clean-structure",
+  "public_pages": [
+    "index.html",
+    "intro.html",
+    "bacterial.html",
+    "fungal.html",
+    "viral.html",
+    "parasitic.html",
+    "myco.html",
+    "updates.html",
+    "admin-updates.html",
+    "about.html",
+    "copyright.html",
+    "disclaimer.html",
+    "shipping-returns.html",
+    "privacy.html"
+  ],
+  "question_counts": {
+    "intro": 45,
+    "bacterial": 150,
+    "fungal": 150,
+    "viral": 150,
+    "parasitic": 80,
+    "myco": 100
+  },
+  "notes": "Root page URLs remain stable; implementation files are grouped by responsibility."
+}
