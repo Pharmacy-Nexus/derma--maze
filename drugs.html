@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07171b">
+  <title>Drug Index | Derma-Maze</title>
+  <meta name="description" content="A bilingual, searchable drug index for Derma-Maze that helps readers locate drug names by category, route, and chapter without publishing treatment details from the book.">
+  <meta name="author" content="Eslam Nasser">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://pharmacy-nexus.github.io/Derma-Maze/drugs.html">
+  <meta property="og:site_name" content="Derma-Maze">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_EG">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:title" content="Drug Index | Derma-Maze">
+  <meta property="og:description" content="Search and locate drug names by category, route, and Derma-Maze chapter—without exposing the book's therapeutic content.">
+  <meta property="og:url" content="https://pharmacy-nexus.github.io/Derma-Maze/drugs.html">
+  <meta property="og:image" content="https://pharmacy-nexus.github.io/Derma-Maze/assets/social/og-home.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Drug Index | Derma-Maze">
+  <meta name="twitter:description" content="A fast bilingual locator for drug names mentioned across Derma-Maze chapters.">
+  <meta name="twitter:image" content="https://pharmacy-nexus.github.io/Derma-Maze/assets/social/og-home.jpg">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/pages/drugs.css">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"CollectionPage",
+    "name":"Derma-Maze Drug Index",
+    "description":"A searchable index that locates drug names across Derma-Maze chapters without publishing dosing or therapeutic protocols.",
+    "url":"https://pharmacy-nexus.github.io/Derma-Maze/drugs.html",
+    "inLanguage":["ar","en"],
+    "isPartOf":{"@type":"WebSite","name":"Derma-Maze","url":"https://pharmacy-nexus.github.io/Derma-Maze/"},
+    "author":{"@type":"Person","name":"Eslam Nasser"}
+  }
+  </script>
+</head>
+<body class="drugs-page">
+  <div id="scrollProgress"></div>
+  <div class="noise"></div>
+
+  <header class="topbar drugs-topbar">
+    <div class="shell nav-wrap">
+      <a class="logo" href="index.html" aria-label="Derma Maze home">
+        <span class="logo-maze" aria-hidden="true"><img src="assets/icons/favicon.svg" alt=""></span>
+        <span class="logo-type"><b>DERMA-MAZE</b><small data-i18n="brand.sub">PHARMACOTHERAPY</small></span>
+      </a>
+      <div class="nav-actions-premium">
+        <button class="lang-pill" id="langBtn" aria-label="Switch language">EN</button>
+        <button class="menu" id="menuBtn" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+      <nav id="mainNav">
+        <a href="index.html#chapters" data-i18n="nav.chapters">الفصول</a>
+        <a href="drugs.html" class="active" data-i18n="nav.drugs">دليل الأدوية</a>
+        <a href="updates.html" data-i18n="nav.updates">التحديثات</a>
+        <a href="index.html#preview" data-i18n="nav.preview">مقتطفات</a>
+        <a href="index.html#buy" class="nav-buy"><span data-i18n="nav.order">اطلب الكتاب</span> <em>↗</em></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="drug-hero" id="drug-top">
+      <div class="drug-hero-grid-lines"></div>
+      <div class="drug-orb drug-orb-a"></div>
+      <div class="drug-orb drug-orb-b"></div>
+      <div class="shell drug-hero-grid">
+        <div class="drug-hero-copy reveal">
+          <div class="kicker"><span></span><b data-drug-i18n="hero.kicker">DERMA-MAZE DRUG INDEX</b></div>
+          <h1 data-drug-i18n-html="hero.title">اكتب اسم الدواء.<br><strong>واعرف مكانه.</strong></h1>
+          <p data-drug-i18n="hero.text">فهرس سريع للأسماء الدوائية المذكورة عبر فصول Derma-Maze. يعرض التصنيف، الشكل العام للاستخدام، والفصل المرتبط فقط—من غير جرعات أو بروتوكولات أو تفاصيل علاجية من الكتاب.</p>
+          <div class="drug-hero-actions">
+            <a class="button primary" href="#drug-explorer"><span data-drug-i18n="hero.searchCta">ابدأ البحث</span><span>↓</span></a>
+            <a class="button ghost" href="#index-policy" data-drug-i18n="hero.policyCta">ما الذي تعرضه الصفحة؟</a>
+          </div>
+          <div class="drug-hero-stats">
+            <div><b id="heroDrugCount">—</b><span data-drug-i18n="hero.statDrugs">دواء مفهرس</span></div>
+            <i></i>
+            <div><b id="heroCategoryCount">—</b><span data-drug-i18n="hero.statCategories">تصنيفات</span></div>
+            <i></i>
+            <div><b>AR / EN</b><span data-drug-i18n="hero.statLang">بحث ثنائي اللغة</span></div>
+          </div>
+        </div>
+
+        <div class="drug-hero-art reveal" aria-hidden="true">
+          <div class="atlas-halo"></div>
+          <div class="atlas-panel">
+            <div class="atlas-topline"><span>DRUG ATLAS</span><b>01—Z</b></div>
+            <div class="atlas-search-mock"><span>⌕</span><b>Terbinafine</b><i>ENTER</i></div>
+            <div class="atlas-result-mock">
+              <small>INDEX MATCH</small>
+              <h2>Terbinafine</h2>
+              <p>ANTIFUNGAL · ORAL / TOPICAL</p>
+              <div><span>CHAPTER</span><b>FUNGAL INFECTIONS</b></div>
+            </div>
+            <div class="atlas-alphabet">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+          </div>
+          <div class="atlas-float atlas-float-one"><small>FAST FILTER</small><b data-drug-i18n="hero.float1">الفصل + الفئة + الشكل</b></div>
+          <div class="atlas-float atlas-float-two"><small>BOOK LOCATOR</small><b data-drug-i18n="hero.float2">مكان الدواء، لا محتوى العلاج</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="drug-explorer section" id="drug-explorer">
+      <div class="shell">
+        <header class="drug-section-head reveal">
+          <div>
+            <span class="eyebrow">SEARCH THE INDEX</span>
+            <h2 data-drug-i18n-html="explorer.title">أسرع طريق.<br>للاسم الذي تبحث عنه.</h2>
+          </div>
+          <p data-drug-i18n="explorer.text">ابدأ بالاسم، ثم ضيّق النتائج حسب الفئة أو الفصل أو طريقة الاستخدام العامة. أي تفاصيل علمية أو علاجية كاملة تظل داخل الكتاب.</p>
+        </header>
+
+        <div class="drug-command reveal">
+          <div class="drug-search-wrap">
+            <span class="drug-search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+            </span>
+            <label class="sr-only" for="drugSearch" data-drug-i18n="search.label">ابحث عن دواء</label>
+            <input id="drugSearch" type="search" autocomplete="off" placeholder="اكتب اسم الدواء..." data-drug-placeholder-ar="اكتب اسم الدواء..." data-drug-placeholder-en="Type a drug name...">
+            <button id="clearDrugSearch" class="clear-search" type="button" aria-label="Clear search">×</button>
+            <kbd>/</kbd>
+          </div>
+          <div class="drug-command-meta">
+            <span><i></i><b id="resultCount">0</b> <em data-drug-i18n="search.results">نتيجة</em></span>
+            <button id="resetDrugFilters" type="button"><span>↻</span><b data-drug-i18n="search.reset">إعادة ضبط</b></button>
+          </div>
+        </div>
+
+        <div class="drug-mobile-filter-row reveal">
+          <button id="openDrugFilters" type="button"><span>☷</span><b data-drug-i18n="filters.open">فتح الفلاتر</b></button>
+          <button id="showFavoritesMobile" type="button"><span>♡</span><b data-drug-i18n="filters.saved">المحفوظة</b></button>
+        </div>
+
+        <div class="drug-layout">
+          <aside class="drug-filters reveal" id="drugFilters">
+            <div class="filter-head">
+              <div><small>FILTER INDEX</small><h3 data-drug-i18n="filters.title">تصفية النتائج</h3></div>
+              <button id="closeDrugFilters" type="button" aria-label="Close filters">×</button>
+            </div>
+
+            <section class="filter-block">
+              <div class="filter-label"><span data-drug-i18n="filters.category">الفئة</span><small id="activeCategoryCount">ALL</small></div>
+              <div class="filter-list" id="categoryFilters"></div>
+            </section>
+
+            <section class="filter-block">
+              <div class="filter-label"><span data-drug-i18n="filters.chapter">الفصل</span><small id="activeChapterCount">ALL</small></div>
+              <div class="filter-list chapter-filter-list" id="chapterFilters"></div>
+            </section>
+
+            <section class="filter-block">
+              <div class="filter-label"><span data-drug-i18n="filters.route">طريقة الاستخدام</span><small id="activeRouteCount">ALL</small></div>
+              <div class="route-filter-grid" id="routeFilters"></div>
+            </section>
+
+            <button class="saved-only-button" id="showFavorites" type="button"><span>♡</span><b data-drug-i18n="filters.savedOnly">عرض المحفوظة فقط</b><small id="favoriteCount">0</small></button>
+          </aside>
+
+          <section class="drug-results-wrap reveal" aria-live="polite">
+            <div class="alphabet-bar" id="alphabetBar" aria-label="Alphabet filter"></div>
+
+            <div class="drug-result-toolbar">
+              <div>
+                <small data-drug-i18n="results.label">DRUG DIRECTORY</small>
+                <h3><span data-drug-i18n="results.showing">عرض</span> <b id="visibleCount">0</b> <span data-drug-i18n="results.entries">اسمًا</span></h3>
+              </div>
+              <label class="drug-sort-label">
+                <span data-drug-i18n="results.sort">الترتيب</span>
+                <select id="drugSort">
+                  <option value="az" data-drug-i18n="sort.az">A → Z</option>
+                  <option value="za" data-drug-i18n="sort.za">Z → A</option>
+                  <option value="featured" data-drug-i18n="sort.featured">المميز أولًا</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="active-filter-row" id="activeFilterRow"></div>
+            <div class="drug-grid" id="drugGrid"></div>
+
+            <div class="drug-empty" id="drugEmpty" hidden>
+              <span>⌕</span>
+              <h3 data-drug-i18n="empty.title">مفيش نتيجة مطابقة</h3>
+              <p data-drug-i18n="empty.text">جرّب كتابة جزء من الاسم أو إزالة أحد الفلاتر.</p>
+              <button class="button primary" id="emptyReset" type="button"><span data-drug-i18n="empty.reset">عرض كل الأدوية</span><span>↻</span></button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="index-policy section" id="index-policy">
+      <div class="shell">
+        <div class="policy-intro reveal">
+          <span class="eyebrow">CLEAR CONTENT BOUNDARY</span>
+          <h2 data-drug-i18n-html="policy.title">الصفحة دليل.<br>مش نسخة من الكتاب.</h2>
+          <p data-drug-i18n="policy.text">كل بطاقة مصممة لمساعدتك تصل للاسم والفصل بسرعة، من غير نشر معلومات التشخيص أو الجرعات أو اختيار العلاج أو الجداول العلمية المحفوظة داخل Derma-Maze.</p>
+        </div>
+        <div class="policy-grid">
+          <article class="policy-card policy-yes reveal">
+            <span>01</span><small data-drug-i18n="policy.showsLabel">تظهر الصفحة</small>
+            <h3 data-drug-i18n="policy.showsTitle">بيانات فهرسة خفيفة</h3>
+            <ul>
+              <li data-drug-i18n="policy.show1">اسم الدواء</li>
+              <li data-drug-i18n="policy.show2">الفئة الدوائية العامة</li>
+              <li data-drug-i18n="policy.show3">الشكل العام للاستخدام</li>
+              <li data-drug-i18n="policy.show4">الفصل الموجود فيه</li>
+            </ul>
+          </article>
+          <article class="policy-card policy-no reveal">
+            <span>02</span><small data-drug-i18n="policy.hidesLabel">لا تظهر الصفحة</small>
+            <h3 data-drug-i18n="policy.hidesTitle">المحتوى العلمي الأساسي</h3>
+            <ul>
+              <li data-drug-i18n="policy.hide1">الجرعات ومدد العلاج</li>
+              <li data-drug-i18n="policy.hide2">الاختيار الأول والبدائل</li>
+              <li data-drug-i18n="policy.hide3">التشخيص والخوارزميات</li>
+              <li data-drug-i18n="policy.hide4">الجداول والـClinical Pearls</li>
+            </ul>
+          </article>
+          <article class="policy-card policy-book reveal">
+            <span>03</span><small>DERMA-MAZE</small>
+            <h3 data-drug-i18n="policy.bookTitle">التفاصيل مكانها الكتاب</h3>
+            <p data-drug-i18n="policy.bookText">بعد ما تعرف مكان الدواء، ارجع للفصل الكامل داخل الكتاب لفهمه في سياقه الصحيح.</p>
+            <a class="text-button" href="index.html#buy"><span data-drug-i18n="policy.bookCta">اعرف تفاصيل الكتاب</span><span>↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="drug-bottom-cta section">
+      <div class="shell drug-bottom-card reveal">
+        <div class="drug-bottom-mark">Rx</div>
+        <div>
+          <span>FROM NAME TO CHAPTER</span>
+          <h2 data-drug-i18n-html="cta.title">لقيت الاسم؟<br>كمّل رحلته في الكتاب.</h2>
+          <p data-drug-i18n="cta.text">الفهرس يوصلك للمكان، لكن الشرح والمقارنة والسياق العلاجي يفضلوا جزءًا من تجربة Derma-Maze الكاملة.</p>
+        </div>
+        <div class="drug-bottom-actions">
+          <a class="button gold" href="index.html#buy"><span data-drug-i18n="cta.order">اطلب الكتاب</span><span>↗</span></a>
+          <a class="button ghost" href="index.html#chapters"><span data-drug-i18n="cta.chapters">استكشف الفصول</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-grid">
+      <a class="logo footer-logo" href="index.html"><span class="logo-maze" aria-hidden="true"><img src="assets/icons/favicon.svg" alt=""></span><span class="logo-type"><b>DERMA-MAZE</b><small>From clinical signs to confident decisions</small></span></a>
+      <p data-i18n="footer.disclaimer">محتوى تعليمي للصيادلة وطلاب الصيدلة، ولا يُعد بديلًا عن التقييم الطبي أو البروتوكولات المحلية.</p>
+      <div class="footer-links">
+        <span class="footer-primary-links"><a href="index.html#chapters" data-i18n="nav.chapters">الفصول</a><a href="drugs.html" data-i18n="nav.drugs">دليل الأدوية</a><a href="index.html#buy" data-i18n="nav.order">اطلب الكتاب</a></span>
+        <span class="footer-legal-links"><a href="updates.html" data-i18n="footer.updates">التحديثات</a><a href="about.html" data-i18n="footer.about">عن المؤلف</a><a href="copyright.html" data-i18n="footer.copyright">حقوق النشر</a><a href="disclaimer.html" data-i18n="footer.disclaimerLink">إخلاء المسؤولية</a><a href="shipping-returns.html" data-i18n="footer.shipping">الشحن والاسترجاع</a><a href="privacy.html" data-i18n="footer.privacy">الخصوصية</a></span>
+      </div>
+      <small>© 2026 Eslam Nasser. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <dialog class="drug-dialog" id="drugDialog">
+    <button class="drug-dialog-close" id="closeDrugDialog" type="button" aria-label="Close">×</button>
+    <div class="drug-dialog-inner" id="drugDialogContent"></div>
+  </dialog>
+  <div class="drug-filter-backdrop" id="drugFilterBackdrop"></div>
+
+  <script src="js/core/shared.js"></script>
+  <script src="data/drugs/drugs.js"></script>
+  <script src="js/pages/drugs.js"></script>
+</body>
+</html>
