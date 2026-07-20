@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07171b">
   <title>Drug Index | Derma-Maze</title>
-  <meta name="description" content="A bilingual, searchable drug index for Derma-Maze that helps readers locate drug names by category, route, and chapter without publishing treatment details from the book.">
+  <meta name="description" content="A bilingual smart drug index for Derma-Maze that separates scientifically relevant dermatology dosage forms from current Egyptian market availability without publishing treatment details from the book.">
   <meta name="author" content="Eslam Nasser">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://pharmacy-nexus.github.io/Derma-Maze/drugs.html">
@@ -14,12 +14,12 @@
   <meta property="og:locale" content="ar_EG">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:title" content="Drug Index | Derma-Maze">
-  <meta property="og:description" content="Search and locate drug names by category, route, and Derma-Maze chapter—without exposing the book's therapeutic content.">
+  <meta property="og:description" content="Explore dermatology dosage forms and their separately tracked Egyptian availability without exposing the book's therapeutic content.">
   <meta property="og:url" content="https://pharmacy-nexus.github.io/Derma-Maze/drugs.html">
   <meta property="og:image" content="https://pharmacy-nexus.github.io/Derma-Maze/assets/social/og-home.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Drug Index | Derma-Maze">
-  <meta name="twitter:description" content="A fast bilingual locator for drug names mentioned across Derma-Maze chapters.">
+  <meta name="twitter:description" content="A bilingual smart locator for dermatology drug forms, Egyptian availability, and book location.">
   <meta name="twitter:image" content="https://pharmacy-nexus.github.io/Derma-Maze/assets/social/og-home.jpg">
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
@@ -35,7 +35,7 @@
     "@context":"https://schema.org",
     "@type":"CollectionPage",
     "name":"Derma-Maze Drug Index",
-    "description":"A searchable index that locates drug names across Derma-Maze chapters without publishing dosing or therapeutic protocols.",
+    "description":"A searchable smart index that separates dermatology dosage forms from Egyptian market availability without publishing dosing or therapeutic protocols.",
     "url":"https://pharmacy-nexus.github.io/Derma-Maze/drugs.html",
     "inLanguage":["ar","en"],
     "isPartOf":{"@type":"WebSite","name":"Derma-Maze","url":"https://pharmacy-nexus.github.io/Derma-Maze/"},
@@ -74,12 +74,12 @@
       <div class="drug-orb drug-orb-b"></div>
       <div class="shell drug-hero-grid">
         <div class="drug-hero-copy reveal">
-          <div class="kicker"><span></span><b data-drug-i18n="hero.kicker">DERMA-MAZE DRUG INDEX</b></div>
-          <h1 data-drug-i18n-html="hero.title">اكتب اسم الدواء.<br><strong>واعرف مكانه.</strong></h1>
-          <p data-drug-i18n="hero.text">فهرس سريع للأسماء الدوائية المذكورة عبر فصول Derma-Maze. يعرض التصنيف، الشكل العام للاستخدام، والفصل المرتبط فقط—من غير جرعات أو بروتوكولات أو تفاصيل علاجية من الكتاب.</p>
+          <div class="kicker"><span></span><b data-drug-i18n="hero.kicker">DERMA-MAZE SMART DRUG INDEX</b></div>
+          <h1 data-drug-i18n-html="hero.title">الشكل العلمي أولًا.<br><strong>والسوق المصري منفصل.</strong></h1>
+          <p data-drug-i18n="hero.text">فهرس ذكي يوضح الأشكال الدوائية المرتبطة بالاستخدام الجلدي علميًا، حتى لو لم تكن متاحة حاليًا في مصر. حالة التوفر المحلي تظهر بشكل مستقل لكل شكل، من غير جرعات أو بروتوكولات أو شرح علاجي من الكتاب.</p>
           <div class="drug-hero-actions">
             <a class="button primary" href="#drug-explorer"><span data-drug-i18n="hero.searchCta">ابدأ البحث</span><span>↓</span></a>
-            <a class="button ghost" href="#index-policy" data-drug-i18n="hero.policyCta">ما الذي تعرضه الصفحة؟</a>
+            <a class="button ghost" href="#index-policy" data-drug-i18n="hero.policyCta">افهم طريقة عرض البيانات</a>
           </div>
           <div class="drug-hero-stats">
             <div><b id="heroDrugCount">—</b><span data-drug-i18n="hero.statDrugs">دواء مفهرس</span></div>
@@ -103,8 +103,30 @@
             </div>
             <div class="atlas-alphabet">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
           </div>
-          <div class="atlas-float atlas-float-one"><small>FAST FILTER</small><b data-drug-i18n="hero.float1">الفصل + الفئة + الشكل</b></div>
-          <div class="atlas-float atlas-float-two"><small>BOOK LOCATOR</small><b data-drug-i18n="hero.float2">مكان الدواء، لا محتوى العلاج</b></div>
+          <div class="atlas-float atlas-float-one"><small>FAST FILTER</small><b data-drug-i18n="hero.float1">الأشكال العلمية عالميًا</b></div>
+          <div class="atlas-float atlas-float-two"><small>BOOK LOCATOR</small><b data-drug-i18n="hero.float2">توافر مصر لكل شكل</b></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="drug-truth-strip" id="data-model">
+      <div class="shell truth-strip-grid reveal">
+        <div class="truth-strip-copy">
+          <span>SCIENTIFIC FORM × LOCAL MARKET</span>
+          <h2 data-drug-i18n="truth.title">شكل علمي ≠ منتج متوفر في مصر</h2>
+          <p data-drug-i18n="truth.text">وجود شكل دوائي ضمن الاستخدامات الجلدية لا يعني أنه متاح محليًا. لذلك يعرض الفهرس الشكل العلمي أولًا، ثم يضع حالة السوق المصري بجواره بشكل مستقل ومؤرَّخ عند التحقق.</p>
+        </div>
+        <div class="truth-strip-cards">
+          <article>
+            <i>01</i>
+            <div><b data-drug-i18n="truth.global">الشكل الجلدي العلمي</b><p data-drug-i18n="truth.globalText">يظهر حتى لو لم يوجد له منتج مصري حاليًا.</p></div>
+          </article>
+          <span>≠</span>
+          <article>
+            <i>02</i>
+            <div><b data-drug-i18n="truth.egypt">التوفر في مصر</b><p data-drug-i18n="truth.egyptText">حالة منفصلة لكل شكل، ولا تُفترض من الشكل العلمي.</p></div>
+          </article>
         </div>
       </div>
     </section>
@@ -114,9 +136,9 @@
         <header class="drug-section-head reveal">
           <div>
             <span class="eyebrow">SEARCH THE INDEX</span>
-            <h2 data-drug-i18n-html="explorer.title">أسرع طريق.<br>للاسم الذي تبحث عنه.</h2>
+            <h2 data-drug-i18n-html="explorer.title">اعرف الدواء.<br>واعرف الشكل المقصود.</h2>
           </div>
-          <p data-drug-i18n="explorer.text">ابدأ بالاسم، ثم ضيّق النتائج حسب الفئة أو الفصل أو طريقة الاستخدام العامة. أي تفاصيل علمية أو علاجية كاملة تظل داخل الكتاب.</p>
+          <p data-drug-i18n="explorer.text">ابحث بالاسم أو الاسم البديل، ثم صفِّ النتائج حسب الفئة أو الفصل أو طريق الاستخدام الجلدي. التوفر في مصر لا يغيّر الشكل العلمي المسجل للدواء.</p>
         </header>
 
         <div class="drug-command reveal">
@@ -158,7 +180,7 @@
             </section>
 
             <section class="filter-block">
-              <div class="filter-label"><span data-drug-i18n="filters.route">طريقة الاستخدام</span><small id="activeRouteCount">ALL</small></div>
+              <div class="filter-label"><span data-drug-i18n="filters.route">طريق الاستخدام الجلدي</span><small id="activeRouteCount">ALL</small></div>
               <div class="route-filter-grid" id="routeFilters"></div>
             </section>
 
@@ -170,7 +192,7 @@
 
             <div class="drug-result-toolbar">
               <div>
-                <small data-drug-i18n="results.label">DRUG DIRECTORY</small>
+                <small data-drug-i18n="results.label">SMART DRUG DIRECTORY</small>
                 <h3><span data-drug-i18n="results.showing">عرض</span> <b id="visibleCount">0</b> <span data-drug-i18n="results.entries">اسمًا</span></h3>
               </div>
               <label class="drug-sort-label">
@@ -189,7 +211,7 @@
             <div class="drug-empty" id="drugEmpty" hidden>
               <span>⌕</span>
               <h3 data-drug-i18n="empty.title">مفيش نتيجة مطابقة</h3>
-              <p data-drug-i18n="empty.text">جرّب كتابة جزء من الاسم أو إزالة أحد الفلاتر.</p>
+              <p data-drug-i18n="empty.text">جرّب كتابة جزء من الاسم أو الاسم البديل، أو إزالة أحد الفلاتر.</p>
               <button class="button primary" id="emptyReset" type="button"><span data-drug-i18n="empty.reset">عرض كل الأدوية</span><span>↻</span></button>
             </div>
           </section>
@@ -201,34 +223,34 @@
       <div class="shell">
         <div class="policy-intro reveal">
           <span class="eyebrow">CLEAR CONTENT BOUNDARY</span>
-          <h2 data-drug-i18n-html="policy.title">الصفحة دليل.<br>مش نسخة من الكتاب.</h2>
-          <p data-drug-i18n="policy.text">كل بطاقة مصممة لمساعدتك تصل للاسم والفصل بسرعة، من غير نشر معلومات التشخيص أو الجرعات أو اختيار العلاج أو الجداول العلمية المحفوظة داخل Derma-Maze.</p>
+          <h2 data-drug-i18n-html="policy.title">الصفحة فهرس ذكي.<br>وليست مرجعًا علاجيًا.</h2>
+          <p data-drug-i18n="policy.text">كل بطاقة تساعد القارئ في التعرف على الدواء، أشكاله الجلدية، حالة التوفر المحلية، ومكانه داخل Derma-Maze، من غير نشر المحتوى العلاجي الأساسي للكتاب.</p>
         </div>
         <div class="policy-grid">
           <article class="policy-card policy-yes reveal">
             <span>01</span><small data-drug-i18n="policy.showsLabel">تظهر الصفحة</small>
-            <h3 data-drug-i18n="policy.showsTitle">بيانات فهرسة خفيفة</h3>
+            <h3 data-drug-i18n="policy.showsTitle">بيانات تعريف وفهرسة</h3>
             <ul>
-              <li data-drug-i18n="policy.show1">اسم الدواء</li>
-              <li data-drug-i18n="policy.show2">الفئة الدوائية العامة</li>
-              <li data-drug-i18n="policy.show3">الشكل العام للاستخدام</li>
-              <li data-drug-i18n="policy.show4">الفصل الموجود فيه</li>
+              <li data-drug-i18n="policy.show1">الاسم العلمي والأسماء البديلة</li>
+              <li data-drug-i18n="policy.show2">الفئة والتصنيف الفرعي</li>
+              <li data-drug-i18n="policy.show3">الأشكال المرتبطة بالاستخدام الجلدي</li>
+              <li data-drug-i18n="policy.show4">حالة كل شكل في مصر ومكانه بالكتاب</li>
             </ul>
           </article>
           <article class="policy-card policy-no reveal">
             <span>02</span><small data-drug-i18n="policy.hidesLabel">لا تظهر الصفحة</small>
-            <h3 data-drug-i18n="policy.hidesTitle">المحتوى العلمي الأساسي</h3>
+            <h3 data-drug-i18n="policy.hidesTitle">المحتوى العلاجي الأساسي</h3>
             <ul>
               <li data-drug-i18n="policy.hide1">الجرعات ومدد العلاج</li>
               <li data-drug-i18n="policy.hide2">الاختيار الأول والبدائل</li>
               <li data-drug-i18n="policy.hide3">التشخيص والخوارزميات</li>
-              <li data-drug-i18n="policy.hide4">الجداول والـClinical Pearls</li>
+              <li data-drug-i18n="policy.hide4">التحذيرات والجداول والـClinical Pearls</li>
             </ul>
           </article>
           <article class="policy-card policy-book reveal">
             <span>03</span><small>DERMA-MAZE</small>
-            <h3 data-drug-i18n="policy.bookTitle">التفاصيل مكانها الكتاب</h3>
-            <p data-drug-i18n="policy.bookText">بعد ما تعرف مكان الدواء، ارجع للفصل الكامل داخل الكتاب لفهمه في سياقه الصحيح.</p>
+            <h3 data-drug-i18n="policy.bookTitle">السياق الكامل داخل الكتاب</h3>
+            <p data-drug-i18n="policy.bookText">الفهرس يحدد الاسم والشكل والمكان فقط. تفسير الاختيار العلاجي والمقارنات يظل داخل الفصل الكامل.</p>
             <a class="text-button" href="index.html#buy"><span data-drug-i18n="policy.bookCta">اعرف تفاصيل الكتاب</span><span>↗</span></a>
           </article>
         </div>
@@ -240,8 +262,8 @@
         <div class="drug-bottom-mark">Rx</div>
         <div>
           <span>FROM NAME TO CHAPTER</span>
-          <h2 data-drug-i18n-html="cta.title">لقيت الاسم؟<br>كمّل رحلته في الكتاب.</h2>
-          <p data-drug-i18n="cta.text">الفهرس يوصلك للمكان، لكن الشرح والمقارنة والسياق العلاجي يفضلوا جزءًا من تجربة Derma-Maze الكاملة.</p>
+          <h2 data-drug-i18n-html="cta.title">وصلت للاسم والشكل؟<br>ارجع للسياق داخل الكتاب.</h2>
+          <p data-drug-i18n="cta.text">الموقع ينظم الوصول للمعلومة، لكن قرار العلاج والجرعات والمقارنات يظل جزءًا من تجربة Derma-Maze الكاملة.</p>
         </div>
         <div class="drug-bottom-actions">
           <a class="button gold" href="index.html#buy"><span data-drug-i18n="cta.order">اطلب الكتاب</span><span>↗</span></a>
