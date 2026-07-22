@@ -3,13 +3,14 @@
 
   const drugs = Array.isArray(window.DERMA_MAZE_DRUGS) ? window.DERMA_MAZE_DRUGS : [];
   const FAVORITES_KEY = 'dermaMazeDrugFavorites';
+  const VIEW_KEY = 'dermaMazeDrugView';
 
   const ui = {
     ar: {
       'hero.kicker':'DERMA-MAZE SMART DRUG INDEX',
       'hero.title':'الشكل العلمي أولًا.<br><strong>والسوق المصري منفصل.</strong>',
       'hero.text':'فهرس ذكي يوضح الأشكال الدوائية المرتبطة بالاستخدام الجلدي علميًا، حتى لو لم تكن متاحة حاليًا في مصر. حالة التوفر المحلي تظهر بشكل مستقل لكل شكل، من غير جرعات أو بروتوكولات أو شرح علاجي من الكتاب.',
-      'hero.searchCta':'ابدأ البحث','hero.policyCta':'افهم طريقة عرض البيانات','hero.statDrugs':'دواء مفهرس','hero.statCategories':'تصنيفات','hero.statLang':'بحث ثنائي اللغة','hero.float1':'الأشكال العلمية عالميًا','hero.float2':'توافر مصر لكل شكل',
+      'hero.searchCta':'ابدأ البحث','hero.policyCta':'افهم طريقة عرض البيانات','hero.statDrugs':'اسم فريد','hero.statCategories':'تصنيفات','hero.statForms':'شكل جلدي','hero.statLang':'بحث ثنائي اللغة','hero.float1':'الأشكال العلمية عالميًا','hero.float2':'توافر مصر لكل شكل',
       'explorer.title':'اعرف الدواء.<br>واعرف الشكل المقصود.','explorer.text':'ابحث بالاسم أو الاسم البديل، ثم صفِّ النتائج حسب الفئة أو الفصل أو طريق الاستخدام الجلدي. التوفر في مصر لا يغيّر الشكل العلمي المسجل للدواء.',
       'search.label':'ابحث عن دواء','search.results':'نتيجة','search.reset':'إعادة ضبط',
       'filters.open':'فتح الفلاتر','filters.saved':'المحفوظة','filters.title':'تصفية النتائج','filters.category':'الفئة','filters.chapter':'الفصل','filters.route':'طريق الاستخدام الجلدي','filters.savedOnly':'عرض المحفوظة فقط',
@@ -17,19 +18,20 @@
       'empty.title':'مفيش نتيجة مطابقة','empty.text':'جرّب كتابة جزء من الاسم أو الاسم البديل، أو إزالة أحد الفلاتر.','empty.reset':'عرض كل الأدوية',
       'truth.title':'شكل علمي ≠ منتج متوفر في مصر','truth.text':'وجود شكل دوائي ضمن الاستخدامات الجلدية لا يعني أنه متاح محليًا. لذلك يعرض الفهرس الشكل العلمي أولًا، ثم يضع حالة السوق المصري بجواره بشكل مستقل ومؤرَّخ عند التحقق.',
       'truth.global':'الشكل الجلدي العلمي','truth.globalText':'يظهر حتى لو لم يوجد له منتج مصري حاليًا.','truth.egypt':'التوفر في مصر','truth.egyptText':'حالة منفصلة لكل شكل، ولا تُفترض من الشكل العلمي.',
+      'scope.title':'خمسة فصول.<br><strong>فهرس واحد ذكي.</strong>','scope.text':'اختَر فصلًا للوصول السريع إلى أدويةه. الأرقام هنا تمثل الأسماء والأشكال المفهرسة، لا عدد البروتوكولات أو الاستخدامات العلاجية.','scope.drugs':'اسمًا فريدًا','scope.forms':'شكلًا جلديًا','scope.chapters':'فصول علاجية','scope.pending':'في انتظار مراجعة مصر',
       'policy.title':'الصفحة فهرس ذكي.<br>وليست مرجعًا علاجيًا.','policy.text':'كل بطاقة تساعد القارئ في التعرف على الدواء، أشكاله الجلدية، حالة التوفر المحلية، ومكانه داخل Derma-Maze، من غير نشر المحتوى العلمي الأساسي للكتاب.',
       'policy.showsLabel':'تظهر الصفحة','policy.showsTitle':'بيانات تعريف وفهرسة','policy.show1':'الاسم العلمي والأسماء البديلة','policy.show2':'الفئة والتصنيف الفرعي','policy.show3':'الأشكال المرتبطة بالاستخدام الجلدي','policy.show4':'حالة كل شكل في مصر ومكانه بالكتاب',
       'policy.hidesLabel':'لا تظهر الصفحة','policy.hidesTitle':'المحتوى العلاجي الأساسي','policy.hide1':'الجرعات ومدد العلاج','policy.hide2':'الاختيار الأول والبدائل','policy.hide3':'التشخيص والخوارزميات','policy.hide4':'التحذيرات والجداول والـClinical Pearls',
       'policy.bookTitle':'السياق الكامل داخل الكتاب','policy.bookText':'الفهرس يحدد الاسم والشكل والمكان فقط. تفسير الاختيار العلاجي والمقارنات يظل داخل الفصل الكامل.','policy.bookCta':'اعرف تفاصيل الكتاب',
       'cta.title':'وصلت للاسم والشكل؟<br>ارجع للسياق داخل الكتاب.','cta.text':'الموقع ينظم الوصول للمعلومة، لكن قرار العلاج والجرعات والمقارنات يظل جزءًا من تجربة Derma-Maze الكاملة.','cta.order':'اطلب الكتاب','cta.chapters':'استكشف الفصول',
       all:'الكل', locate:'عرض البطاقة', saved:'محفوظ', save:'حفظ', chapterLabel:'موجود في', routeLabel:'طريق الاستخدام', classLabel:'الفئة', subclassLabel:'التصنيف الفرعي', formsLabel:'الأشكال الجلدية', aliasesLabel:'أسماء بديلة', egyptLabel:'التوفر في مصر', sectionLabel:'القسم', pageLabel:'الصفحة', brandsLabel:'براندات مصرية موثقة', verificationLabel:'آخر تحقق', indexOnly:'الأشكال المعروضة مرتبطة بالاستخدام الجلدي علميًا، سواء كانت متوفرة في مصر أم لا. حالة مصر منفصلة لكل شكل.', bookNote:'الجرعات والاختيار العلاجي والتفاصيل العلمية الكاملة موجودة داخل الفصل المطبوع.', bookCta:'تفاصيل الكتاب', openChapter:'افتح صفحة الفصل', close:'إغلاق', removeFilter:'إزالة الفلتر',
-      statusAvailable:'متوفر ومتحقق منه', statusPartial:'متوفر جزئيًا', statusNotVerified:'لا يوجد منتج مصري متحقق منه حاليًا', statusPending:'في انتظار مراجعة السوق', statusUnknown:'غير محدد', brandsNone:'لم تُضف براندات موثقة بعد', pagePending:'يُحدد بعد مراجعة النسخة النهائية', draftBadge:'مسودة بيانات', scientificForm:'الشكل العلمي', marketStatus:'حالة مصر'
+      statusAvailable:'متوفر ومتحقق منه', statusPartial:'متوفر جزئيًا', statusNotVerified:'لا يوجد منتج مصري متحقق منه حاليًا', statusPending:'في انتظار مراجعة السوق', statusUnknown:'غير محدد', brandsNone:'لم تُضف براندات موثقة بعد', pagePending:'يُحدد بعد مراجعة النسخة النهائية', draftBadge:'مراجعة الشكل مطلوبة', scientificForm:'الشكل العلمي', marketStatus:'حالة مصر', sourceTitle:'تم استيراد القائمة الرئيسية', sourceText:'تم توحيد الأسماء المتكررة والمرادفات مع الاحتفاظ بكل أماكن الظهور داخل الفصول.', sourceMentions:'اسمًا واردًا', sourceUnique:'اسمًا فريدًا', sourceCross:'اسمًا في أكثر من فصل', loadMore:'عرض المزيد', remaining:'متبقي', foundInChapters:'موجود في عدة فصول', locationsLabel:'أماكن الظهور في الكتاب'
     },
     en: {
       'hero.kicker':'DERMA-MAZE SMART DRUG INDEX',
       'hero.title':'Scientific form first.<br><strong>Egyptian market separate.</strong>',
       'hero.text':'A smart index of dermatology-related dosage forms, even when a form is not currently marketed in Egypt. Local availability is tracked separately for every form—without doses, protocols, or therapeutic explanations from the book.',
-      'hero.searchCta':'Start searching','hero.policyCta':'How the data works','hero.statDrugs':'indexed drugs','hero.statCategories':'categories','hero.statLang':'bilingual search','hero.float1':'scientific forms worldwide','hero.float2':'Egypt status per form',
+      'hero.searchCta':'Start searching','hero.policyCta':'How the data works','hero.statDrugs':'unique entries','hero.statCategories':'categories','hero.statForms':'dermatology forms','hero.statLang':'bilingual search','hero.float1':'scientific forms worldwide','hero.float2':'Egypt status per form',
       'explorer.title':'Know the drug.<br>Know the exact form.','explorer.text':'Search by drug name or alias, then narrow results by category, chapter, or dermatology route. Egyptian availability never replaces the scientifically relevant form.',
       'search.label':'Search for a drug','search.results':'results','search.reset':'Reset',
       'filters.open':'Open filters','filters.saved':'Saved','filters.title':'Filter results','filters.category':'Category','filters.chapter':'Chapter','filters.route':'Dermatology route','filters.savedOnly':'Show saved only',
@@ -37,13 +39,14 @@
       'empty.title':'No matching result','empty.text':'Try part of the drug name or alias, or remove one of the filters.','empty.reset':'Show all drugs',
       'truth.title':'Scientific form ≠ Egyptian product availability','truth.text':'A dermatology dosage form can be scientifically relevant without being locally marketed. The index therefore lists the scientific form first and tracks Egyptian availability separately, with a verification date when available.',
       'truth.global':'Scientific dermatology form','truth.globalText':'Shown even when no current Egyptian product exists.','truth.egypt':'Availability in Egypt','truth.egyptText':'A separate status for every form; never inferred from the scientific form.',
+      'scope.title':'Five chapters.<br><strong>One intelligent index.</strong>','scope.text':'Choose a chapter for instant access to its indexed medicines. Counts represent names and dosage forms—not protocols or treatment indications.','scope.drugs':'unique entries','scope.forms':'dermatology forms','scope.chapters':'therapy chapters','scope.pending':'awaiting Egypt review',
       'policy.title':'A smart index.<br>Not a treatment reference.','policy.text':'Every card helps readers identify the drug, its dermatology forms, local availability, and location in Derma-Maze without publishing the book’s core scientific content.',
       'policy.showsLabel':'This page shows','policy.showsTitle':'Identification and index metadata','policy.show1':'Generic name and searchable aliases','policy.show2':'Class and subclass','policy.show3':'Dermatology-related dosage forms','policy.show4':'Egypt status per form and book location',
       'policy.hidesLabel':'This page does not show','policy.hidesTitle':'Core therapeutic content','policy.hide1':'Doses and treatment duration','policy.hide2':'First-line choices and alternatives','policy.hide3':'Diagnosis and algorithms','policy.hide4':'Warnings, tables, and clinical pearls',
       'policy.bookTitle':'Full context stays in the book','policy.bookText':'The index identifies the name, form, and location only. Treatment reasoning and comparisons remain inside the complete chapter.','policy.bookCta':'View book details',
       'cta.title':'Found the name and form?<br>Return to the book for context.','cta.text':'The website organizes access, while treatment decisions, dosing, and comparisons remain part of the complete Derma-Maze experience.','cta.order':'Order the book','cta.chapters':'Explore chapters',
       all:'All', locate:'Open card', saved:'Saved', save:'Save', chapterLabel:'Found in', routeLabel:'Route', classLabel:'Class', subclassLabel:'Subclass', formsLabel:'Dermatology forms', aliasesLabel:'Aliases', egyptLabel:'Availability in Egypt', sectionLabel:'Section', pageLabel:'Page', brandsLabel:'Verified Egyptian brands', verificationLabel:'Last verified', indexOnly:'Displayed forms are scientifically related to dermatology whether or not they are marketed in Egypt. Egyptian status is tracked separately for every form.', bookNote:'Dosing, treatment selection, and full scientific details remain inside the printed chapter.', bookCta:'Book details', openChapter:'Open chapter page', close:'Close', removeFilter:'Remove filter',
-      statusAvailable:'Verified available', statusPartial:'Partially available', statusNotVerified:'No currently verified Egyptian product', statusPending:'Market review pending', statusUnknown:'Not specified', brandsNone:'No verified local brands added yet', pagePending:'Pending final-edition review', draftBadge:'Draft data', scientificForm:'Scientific form', marketStatus:'Egypt status'
+      statusAvailable:'Verified available', statusPartial:'Partially available', statusNotVerified:'No currently verified Egyptian product', statusPending:'Market review pending', statusUnknown:'Not specified', brandsNone:'No verified local brands added yet', pagePending:'Pending final-edition review', draftBadge:'Form review needed', scientificForm:'Scientific form', marketStatus:'Egypt status', sourceTitle:'Master list imported', sourceText:'Duplicates and aliases were normalized while preserving every chapter location.', sourceMentions:'named mentions', sourceUnique:'unique entries', sourceCross:'cross-chapter entries', loadMore:'Load more', remaining:'remaining', foundInChapters:'Found in multiple chapters', locationsLabel:'Book locations'
     }
   };
 
@@ -53,7 +56,13 @@
     antifungal: { ar:'مضادات فطريات', en:'Antifungals', accent:'#4eb57f' },
     antiviral: { ar:'مضادات فيروسات', en:'Antivirals', accent:'#b36ba9' },
     antiparasitic: { ar:'مضادات طفيليات', en:'Antiparasitics', accent:'#40b8ca' },
-    antimycobacterial: { ar:'مضادات ميكوبكتيريا', en:'Antimycobacterials', accent:'#ef9e52' }
+    antimycobacterial: { ar:'مضادات ميكوبكتيريا', en:'Antimycobacterials', accent:'#ef9e52' },
+    dermatologic: { ar:'عوامل جلدية', en:'Dermatologic agents', accent:'#d36f8d' },
+    antiinflammatory: { ar:'مضادات التهاب ومنظمات مناعة', en:'Anti-inflammatory & immunomodulators', accent:'#8d79d6' },
+    immunologic: { ar:'لقاحات ومستحضرات مناعية', en:'Vaccines & immunologic products', accent:'#5aa6d8' },
+    supportive: { ar:'علاجات مساعدة', en:'Supportive therapies', accent:'#9aab6f' },
+    nutritional: { ar:'فيتامينات ومعادن', en:'Vitamins & minerals', accent:'#d8a65a' },
+    procedural: { ar:'عوامل إجرائية', en:'Procedural agents', accent:'#a7a7a7' }
   };
 
   const chapters = {
@@ -69,8 +78,13 @@
     all: { ar:'الكل', en:'All', icon:'✦' },
     oral: { ar:'فموي', en:'Oral', icon:'◉' },
     topical: { ar:'موضعي', en:'Topical', icon:'◌' },
-    injectable: { ar:'حقن', en:'Injectable', icon:'◇' },
-    intralesional: { ar:'داخل الآفة', en:'Intralesional', icon:'◎' }
+    injectable: { ar:'حقن أو تسريب', en:'Injection / infusion', icon:'◇' },
+    intralesional: { ar:'داخل الآفة', en:'Intralesional', icon:'◎' },
+    vaginal: { ar:'مهبلي', en:'Vaginal', icon:'◈' },
+    ophthalmic: { ar:'عيني', en:'Ophthalmic', icon:'◍' },
+    inhaled: { ar:'استنشاق', en:'Inhaled', icon:'≈' },
+    rectal: { ar:'شرجي', en:'Rectal', icon:'▱' },
+    procedural: { ar:'إجرائي', en:'Procedural', icon:'❄' }
   };
 
   const statusMeta = {
@@ -83,6 +97,7 @@
 
   const state = {
     query: '', category: 'all', chapter: 'all', route: 'all', letter: 'all', sort: 'az', favoritesOnly: false,
+    view: localStorage.getItem(VIEW_KEY) === 'compact' ? 'compact' : 'grid', limit: 36,
     favorites: new Set(loadFavorites())
   };
 
@@ -104,6 +119,8 @@
   function label(map, key) { return map[key]?.[lang] ?? key; }
   function localText(value, fallback = '—') { return value?.[lang] || value?.en || value?.ar || fallback; }
   function formsOf(drug) { return Array.isArray(drug.dermatologyForms) ? drug.dermatologyForms : []; }
+  function locationsOf(drug) { return Array.isArray(drug.bookLocations) && drug.bookLocations.length ? drug.bookLocations : (drug.book ? [drug.book] : []); }
+  function chapterKeysOf(drug) { return [...new Set(locationsOf(drug).map(item => item.chapter).filter(Boolean))]; }
   function routesOf(drug) { return [...new Set(formsOf(drug).map(item => item.route).filter(Boolean))]; }
 
   function normalize(value) {
@@ -111,7 +128,7 @@
   }
 
   function categoryCount(key) { return key === 'all' ? drugs.length : drugs.filter(d => d.category === key).length; }
-  function chapterCount(key) { return key === 'all' ? drugs.length : drugs.filter(d => d.book?.chapter === key).length; }
+  function chapterCount(key) { return key === 'all' ? drugs.length : drugs.filter(d => chapterKeysOf(d).includes(key)).length; }
   function routeCount(key) { return key === 'all' ? drugs.length : drugs.filter(d => routesOf(d).includes(key)).length; }
 
   function setStaticLanguage(nextLang) {
@@ -134,7 +151,7 @@
         <i style="--dot:${item.accent}"></i><b>${item[lang]}</b><small>${categoryCount(key)}</small>
       </button>`).join('');
     el.categoryFilters.querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => {
-      state.category = button.dataset.category; state.letter = 'all'; renderAll();
+      state.category = button.dataset.category; state.letter = 'all'; state.limit = 36; renderAll();
     }));
   }
 
@@ -144,7 +161,30 @@
         <i style="background:${item.accent}">${item.number}</i><b>${item[lang]}</b><small>${chapterCount(key)}</small>
       </button>`).join('');
     el.chapterFilters.querySelectorAll('[data-chapter]').forEach(button => button.addEventListener('click', () => {
-      state.chapter = button.dataset.chapter; state.letter = 'all'; renderAll();
+      state.chapter = button.dataset.chapter; state.letter = 'all'; state.limit = 36; renderAll();
+    }));
+  }
+
+  function renderScopeDashboard() {
+    if (!el.scopeChapterRail) return;
+    const entries = Object.entries(chapters).filter(([key]) => key !== 'all');
+    el.scopeChapterRail.innerHTML = entries.map(([key, item]) => {
+      const count = chapterCount(key);
+      const formCount = drugs.filter(drug => chapterKeysOf(drug).includes(key)).reduce((sum, drug) => sum + formsOf(drug).length, 0);
+      return `<button class="scope-chapter-card ${state.chapter === key ? 'active' : ''}" type="button" data-quick-chapter="${key}" data-number="${item.number}" style="--scope-accent:${item.accent}">
+        <small><span>CHAPTER ${item.number}</span><i></i></small>
+        <h3>${item[lang]}</h3>
+        <p>${count} ${lang === 'ar' ? 'دواء' : 'drugs'} · ${formCount} ${lang === 'ar' ? 'شكل' : 'forms'}</p>
+        <b><span>↘</span>${lang === 'ar' ? 'تصفية الفصل' : 'Filter chapter'}</b>
+      </button>`;
+    }).join('');
+    el.scopeChapterRail.querySelectorAll('[data-quick-chapter]').forEach(button => button.addEventListener('click', () => {
+      const selected = button.dataset.quickChapter;
+      state.chapter = state.chapter === selected ? 'all' : selected;
+      state.letter = 'all';
+      state.limit = 36;
+      renderAll();
+      document.getElementById('drug-explorer')?.scrollIntoView({ behavior:'smooth', block:'start' });
     }));
   }
 
@@ -154,7 +194,7 @@
         <span>${item.icon}</span><b>${item[lang]}</b><small>${routeCount(key)}</small>
       </button>`).join('');
     el.routeFilters.querySelectorAll('[data-route]').forEach(button => button.addEventListener('click', () => {
-      state.route = button.dataset.route; state.letter = 'all'; renderAll();
+      state.route = button.dataset.route; state.letter = 'all'; state.limit = 36; renderAll();
     }));
   }
 
@@ -168,7 +208,7 @@
       return `<button type="button" class="alphabet-letter ${state.letter === letter ? 'active' : ''} ${disabled ? 'disabled' : ''}" data-letter="${letter}" ${disabled ? 'disabled' : ''}>${letter === 'all' ? '•' : letter}</button>`;
     }).join('');
     el.alphabet.querySelectorAll('[data-letter]').forEach(button => button.addEventListener('click', () => {
-      state.letter = button.dataset.letter; renderAll();
+      state.letter = button.dataset.letter; state.limit = 36; renderAll();
     }));
   }
 
@@ -182,11 +222,12 @@
         localText(drug.subclass),
         label(categories, drug.category),
         ...formsOf(drug).flatMap(form => [localText(form.form), label(routes, form.route)]),
-        label(chapters, drug.book?.chapter)
+        ...chapterKeysOf(drug).map(key => label(chapters, key)),
+        ...locationsOf(drug).map(loc => localText(loc.section))
       ].join(' '));
       if (q && !searchable.includes(q)) return false;
       if (state.category !== 'all' && drug.category !== state.category) return false;
-      if (state.chapter !== 'all' && drug.book?.chapter !== state.chapter) return false;
+      if (state.chapter !== 'all' && !chapterKeysOf(drug).includes(state.chapter)) return false;
       if (state.route !== 'all' && !routesOf(drug).includes(state.route)) return false;
       if (state.letter !== 'all' && drug.name.charAt(0).toUpperCase() !== state.letter) return false;
       if (state.favoritesOnly && !state.favorites.has(drug.id)) return false;
@@ -224,7 +265,18 @@
       </span>`).join('');
   }
 
-  function primaryChapter(drug) { return chapters[drug.book?.chapter] || chapters.all; }
+  function primaryChapter(drug) { return chapters[locationsOf(drug)[0]?.chapter] || chapters.all; }
+
+  function chapterBadges(drug, compact = false) {
+    const keys = chapterKeysOf(drug);
+    const visible = compact ? keys.slice(0, 2) : keys;
+    const badges = visible.map(key => {
+      const item = chapters[key] || chapters.all;
+      return `<span class="drug-chapter-chip" style="--chapter-chip:${item.accent}"><i>${item.number}</i><b>${item[lang]}</b></span>`;
+    }).join('');
+    const extra = compact && keys.length > 2 ? `<span class="drug-chapter-chip more">+${keys.length - 2}</span>` : '';
+    return badges + extra;
+  }
 
   function cardTemplate(drug, index) {
     const category = categories[drug.category] || categories.all;
@@ -234,29 +286,36 @@
     return `
       <article class="drug-card" style="--card-accent:${category.accent}" data-letter="${drug.name.charAt(0)}">
         <div class="drug-card-top">
-          <span class="drug-card-code"><i></i>${String(index + 1).padStart(2, '0')} · ${category.en.toUpperCase()}</span>
+          <span class="drug-card-code"><i></i>${String(index + 1).padStart(2, '0')} · ${category.en.toUpperCase()} · ${formsOf(drug).length} ${lang === 'ar' ? 'شكل' : 'FORMS'}</span>
           <button class="drug-save ${isSaved ? 'saved' : ''}" type="button" data-save-drug="${drug.id}" aria-label="${isSaved ? t('saved') : t('save')}" title="${isSaved ? t('saved') : t('save')}">${isSaved ? '♥' : '♡'}</button>
         </div>
         <div class="drug-card-title-row">
           <div><h3>${drug.name}</h3><p class="drug-card-class">${localText(drug.class)} · ${localText(drug.subclass)}</p></div>
-          ${drug.recordStatus === 'draft' ? `<span class="draft-badge">${t('draftBadge')}</span>` : ''}
+          ${drug.recordStatus === 'form_review' ? `<span class="draft-badge review">${t('draftBadge')}</span>` : ''}
         </div>
         <div class="drug-card-section-label"><span>${t('formsLabel')}</span><i></i></div>
         <div class="drug-form-row">${formBadges(drug)}</div>
         <div class="drug-market-row"><small>${t('egyptLabel')}</small>${statusBadge(status, true)}</div>
         <div class="drug-card-footer">
-          <div class="drug-chapter-locator"><small>${t('chapterLabel')}</small><b>${chapter.number} · ${chapter[lang]}</b></div>
+          <div class="drug-chapter-locator"><small>${chapterKeysOf(drug).length > 1 ? t('foundInChapters') : t('chapterLabel')}</small><div class="drug-chapter-chips">${chapterBadges(drug, true)}</div></div>
           <button class="open-drug" type="button" data-open-drug="${drug.id}" aria-label="${t('locate')}" title="${t('locate')}">↗</button>
         </div>
       </article>`;
   }
 
   function renderCards(filtered) {
-    el.grid.innerHTML = filtered.map(cardTemplate).join('');
+    const visible = filtered.slice(0, state.limit);
+    el.grid.dataset.view = state.view;
+    el.grid.innerHTML = visible.map(cardTemplate).join('');
     el.empty.hidden = filtered.length > 0;
     el.grid.hidden = filtered.length === 0;
     el.grid.querySelectorAll('[data-save-drug]').forEach(button => button.addEventListener('click', () => toggleFavorite(button.dataset.saveDrug)));
     el.grid.querySelectorAll('[data-open-drug]').forEach(button => button.addEventListener('click', () => openDrugDialog(button.dataset.openDrug)));
+    if (el.loadMore) {
+      const remaining = Math.max(0, filtered.length - visible.length);
+      el.loadMore.hidden = remaining === 0;
+      el.loadMore.innerHTML = `<span>${t('loadMore')}</span><b>${Math.min(36, remaining)}</b><small>${remaining} ${t('remaining')}</small>`;
+    }
   }
 
   function renderActiveFilters() {
@@ -278,6 +337,7 @@
     if (key === 'route') state.route = 'all';
     if (key === 'letter') state.letter = 'all';
     if (key === 'favorites') state.favoritesOnly = false;
+    state.limit = 36;
     renderAll();
   }
 
@@ -287,7 +347,7 @@
   }
 
   function resetFilters() {
-    Object.assign(state, { query:'', category:'all', chapter:'all', route:'all', letter:'all', sort:'az', favoritesOnly:false });
+    Object.assign(state, { query:'', category:'all', chapter:'all', route:'all', letter:'all', sort:'az', favoritesOnly:false, limit:36 });
     el.search.value = ''; el.sort.value = 'az'; renderAll();
   }
 
@@ -315,8 +375,7 @@
     const category = categories[drug.category] || categories.all;
     const chapter = primaryChapter(drug);
     const aliases = (drug.aliases || []).length ? drug.aliases.join(' · ') : '—';
-    const section = localText(drug.book?.section, t('pagePending'));
-    const page = drug.book?.page || t('pagePending');
+    const locations = locationsOf(drug);
     const verifiedAt = formsOf(drug).map(form => form.verifiedAt).filter(Boolean).sort().at(-1);
 
     el.dialogContent.innerHTML = `
@@ -324,7 +383,7 @@
         <small>DERMA-MAZE · SMART INDEX ENTRY</small>
         <h2>${drug.name}</h2>
         <p>${localText(drug.class)} · ${localText(drug.subclass)}</p>
-        ${drug.recordStatus === 'draft' ? `<span class="dialog-draft">${t('draftBadge')}</span>` : ''}
+        ${drug.recordStatus === 'form_review' ? `<span class="dialog-draft">${t('draftBadge')}</span>` : ''}
       </div>
       <div class="dialog-body">
         <div class="dialog-index-note"><span>i</span><p>${t('indexOnly')}</p></div>
@@ -341,14 +400,10 @@
           <div class="dialog-verification"><span>${t('verificationLabel')}</span><b>${formatVerificationDate(verifiedAt)}</b></div>
         </section>
 
-        <div class="dialog-book-location">
-          <div class="dialog-chapter">
-            <div><small>${t('chapterLabel').toUpperCase()}</small><b>${chapter.number} · ${chapter[lang]}</b></div>
-            <a href="${chapter.href}" aria-label="${t('openChapter')}" title="${t('openChapter')}">↗</a>
-          </div>
-          <div class="dialog-location-grid">
-            <div><small>${t('sectionLabel')}</small><b>${section}</b></div>
-            <div><small>${t('pageLabel')}</small><b>${page}</b></div>
+        <div class="dialog-book-location multi-location">
+          <div class="dialog-section-title location-title"><div><small>BOOK LOCATOR</small><h3>${t('locationsLabel')}</h3></div><span>${locations.length}</span></div>
+          <div class="dialog-location-list">
+            ${locations.map(loc => { const item = chapters[loc.chapter] || chapters.all; return `<article style="--loc-accent:${item.accent}"><div class="dialog-chapter"><div><small>${t('chapterLabel').toUpperCase()}</small><b>${item.number} · ${item[lang]}</b></div><a href="${item.href}" aria-label="${t('openChapter')}" title="${t('openChapter')}">↗</a></div><div class="dialog-location-grid"><div><small>${t('sectionLabel')}</small><b>${localText(loc.section, t('pagePending'))}</b></div><div><small>${t('pageLabel')}</small><b>${loc.page || t('pagePending')}</b></div></div></article>`; }).join('')}
           </div>
         </div>
 
@@ -365,8 +420,18 @@
   }
 
   function renderCounts(filtered) {
+    const totalForms = drugs.reduce((sum, drug) => sum + formsOf(drug).length, 0);
+    const pendingForms = drugs.reduce((sum, drug) => sum + formsOf(drug).filter(form => (form.egyptStatus || 'unknown') === 'pending').length, 0);
     el.heroDrugCount.textContent = String(drugs.length).padStart(2, '0');
     el.heroCategoryCount.textContent = String(Object.keys(categories).length - 1).padStart(2, '0');
+    if (el.heroFormCount) el.heroFormCount.textContent = String(totalForms).padStart(2, '0');
+    if (el.scopeDrugCount) el.scopeDrugCount.textContent = drugs.length;
+    if (el.scopeFormCount) el.scopeFormCount.textContent = totalForms;
+    if (el.scopeChapterCount) el.scopeChapterCount.textContent = Object.keys(chapters).length - 1;
+    if (el.scopePendingCount) el.scopePendingCount.textContent = pendingForms;
+    if (el.sourceMentionCount) el.sourceMentionCount.textContent = '236';
+    if (el.sourceUniqueCount) el.sourceUniqueCount.textContent = drugs.length;
+    if (el.sourceCrossCount) el.sourceCrossCount.textContent = drugs.filter(drug => chapterKeysOf(drug).length > 1).length;
     el.resultCount.textContent = filtered.length; el.visibleCount.textContent = filtered.length; el.favoriteCount.textContent = state.favorites.size;
     el.activeCategoryCount.textContent = state.category === 'all' ? 'ALL' : '01';
     el.activeChapterCount.textContent = state.chapter === 'all' ? 'ALL' : '01';
@@ -377,15 +442,17 @@
 
   function renderAll() {
     if (!el.grid) return;
-    renderCategoryFilters(); renderChapterFilters(); renderRouteFilters(); renderAlphabet();
+    renderCategoryFilters(); renderChapterFilters(); renderScopeDashboard(); renderRouteFilters(); renderAlphabet();
     const filtered = getFilteredDrugs();
     renderCards(filtered); renderActiveFilters(); renderCounts(filtered);
+    el.gridViewBtn?.classList.toggle('active', state.view === 'grid');
+    el.compactViewBtn?.classList.toggle('active', state.view === 'compact');
   }
 
   function cacheElements() {
-    ['drugSearch','clearDrugSearch','resetDrugFilters','emptyReset','categoryFilters','chapterFilters','routeFilters','alphabetBar','drugGrid','drugEmpty','activeFilterRow','resultCount','visibleCount','heroDrugCount','heroCategoryCount','favoriteCount','activeCategoryCount','activeChapterCount','activeRouteCount','drugSort','showFavorites','showFavoritesMobile','drugFilters','openDrugFilters','closeDrugFilters','drugFilterBackdrop','drugDialog','drugDialogContent','closeDrugDialog'].forEach(id => {
+    ['drugSearch','clearDrugSearch','resetDrugFilters','emptyReset','categoryFilters','chapterFilters','routeFilters','alphabetBar','drugGrid','drugEmpty','activeFilterRow','resultCount','visibleCount','heroDrugCount','heroCategoryCount','favoriteCount','activeCategoryCount','activeChapterCount','activeRouteCount','drugSort','showFavorites','showFavoritesMobile','drugFilters','openDrugFilters','closeDrugFilters','drugFilterBackdrop','drugDialog','drugDialogContent','closeDrugDialog','heroFormCount','scopeDrugCount','scopeFormCount','scopeChapterCount','scopePendingCount','scopeChapterRail','gridViewBtn','compactViewBtn','loadMoreDrugs','sourceMentionCount','sourceUniqueCount','sourceCrossCount'].forEach(id => {
       const key = ({
-        drugSearch:'search', clearDrugSearch:'clear', resetDrugFilters:'reset', emptyReset:'emptyReset', categoryFilters:'categoryFilters', chapterFilters:'chapterFilters', routeFilters:'routeFilters', alphabetBar:'alphabet', drugGrid:'grid', drugEmpty:'empty', activeFilterRow:'activeFilters', resultCount:'resultCount', visibleCount:'visibleCount', heroDrugCount:'heroDrugCount', heroCategoryCount:'heroCategoryCount', favoriteCount:'favoriteCount', activeCategoryCount:'activeCategoryCount', activeChapterCount:'activeChapterCount', activeRouteCount:'activeRouteCount', drugSort:'sort', showFavorites:'savedButton', showFavoritesMobile:'savedMobile', drugFilters:'filters', openDrugFilters:'openFilters', closeDrugFilters:'closeFilters', drugFilterBackdrop:'filterBackdrop', drugDialog:'dialog', drugDialogContent:'dialogContent', closeDrugDialog:'closeDialog'
+        drugSearch:'search', clearDrugSearch:'clear', resetDrugFilters:'reset', emptyReset:'emptyReset', categoryFilters:'categoryFilters', chapterFilters:'chapterFilters', routeFilters:'routeFilters', alphabetBar:'alphabet', drugGrid:'grid', drugEmpty:'empty', activeFilterRow:'activeFilters', resultCount:'resultCount', visibleCount:'visibleCount', heroDrugCount:'heroDrugCount', heroCategoryCount:'heroCategoryCount', favoriteCount:'favoriteCount', activeCategoryCount:'activeCategoryCount', activeChapterCount:'activeChapterCount', activeRouteCount:'activeRouteCount', drugSort:'sort', showFavorites:'savedButton', showFavoritesMobile:'savedMobile', drugFilters:'filters', openDrugFilters:'openFilters', closeDrugFilters:'closeFilters', drugFilterBackdrop:'filterBackdrop', drugDialog:'dialog', drugDialogContent:'dialogContent', closeDrugDialog:'closeDialog', heroFormCount:'heroFormCount', scopeDrugCount:'scopeDrugCount', scopeFormCount:'scopeFormCount', scopeChapterCount:'scopeChapterCount', scopePendingCount:'scopePendingCount', scopeChapterRail:'scopeChapterRail', gridViewBtn:'gridViewBtn', compactViewBtn:'compactViewBtn', loadMoreDrugs:'loadMore', sourceMentionCount:'sourceMentionCount', sourceUniqueCount:'sourceUniqueCount', sourceCrossCount:'sourceCrossCount'
       })[id];
       el[key] = document.getElementById(id);
     });
@@ -395,12 +462,16 @@
     let searchTimer;
     el.search.addEventListener('input', () => {
       clearTimeout(searchTimer);
-      searchTimer = setTimeout(() => { state.query = el.search.value.trim(); state.letter = 'all'; renderAll(); }, 90);
+      searchTimer = setTimeout(() => { state.query = el.search.value.trim(); state.letter = 'all'; state.limit = 36; renderAll(); }, 90);
     });
-    el.clear.addEventListener('click', () => { state.query = ''; el.search.value = ''; el.search.focus(); renderAll(); });
+    el.clear.addEventListener('click', () => { state.query = ''; state.limit = 36; el.search.value = ''; el.search.focus(); renderAll(); });
     el.reset.addEventListener('click', resetFilters); el.emptyReset.addEventListener('click', resetFilters);
-    el.sort.addEventListener('change', () => { state.sort = el.sort.value; renderAll(); });
-    const toggleSaved = () => { state.favoritesOnly = !state.favoritesOnly; renderAll(); };
+    el.sort.addEventListener('change', () => { state.sort = el.sort.value; state.limit = 36; renderAll(); });
+    const setView = view => { state.view = view; localStorage.setItem(VIEW_KEY, view); renderAll(); };
+    el.gridViewBtn?.addEventListener('click', () => setView('grid'));
+    el.loadMore?.addEventListener('click', () => { state.limit += 36; renderAll(); });
+    el.compactViewBtn?.addEventListener('click', () => setView('compact'));
+    const toggleSaved = () => { state.favoritesOnly = !state.favoritesOnly; state.limit = 36; renderAll(); };
     el.savedButton.addEventListener('click', toggleSaved); el.savedMobile.addEventListener('click', toggleSaved);
     el.openFilters.addEventListener('click', openFilters); el.closeFilters.addEventListener('click', closeFilters); el.filterBackdrop.addEventListener('click', closeFilters);
     el.closeDialog.addEventListener('click', () => el.dialog.close());
