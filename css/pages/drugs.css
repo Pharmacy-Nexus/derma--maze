@@ -498,3 +498,98 @@ body[dir="ltr"] .dialog-index-note{border-inline-start:3px solid #278c84}
   .drug-load-more{grid-template-columns:auto auto}.drug-load-more small{grid-column:1/-1}
   .drug-grid[data-view="compact"] .drug-chapter-locator{display:grid}
 }
+
+/* =========================================================
+   SMART DRUG INDEX V4.1 — viewport-safe detail dialog
+   Keeps every entry readable at 100% browser zoom.
+   ========================================================= */
+.drug-dialog{
+  width:min(920px,calc(100vw - 40px));
+  max-width:920px;
+  max-height:calc(100dvh - 32px);
+  margin:auto;
+  overflow:hidden;
+  border-radius:28px;
+}
+.drug-dialog-inner{
+  max-height:calc(100dvh - 32px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(39,140,132,.55) transparent;
+}
+.drug-dialog-inner::-webkit-scrollbar{width:8px}
+.drug-dialog-inner::-webkit-scrollbar-track{background:transparent}
+.drug-dialog-inner::-webkit-scrollbar-thumb{background:rgba(39,140,132,.4);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+.drug-dialog-close{position:sticky;float:inline-end;top:14px;margin:0 14px -52px 0;inset-inline-end:auto;z-index:12}
+body[dir="rtl"] .drug-dialog-close{float:inline-start;margin:0 0 -52px 14px}
+
+@supports not (height:100dvh){
+  .drug-dialog,.drug-dialog-inner{max-height:calc(100vh - 32px)}
+}
+
+@media(min-width:760px){
+  .dialog-head{min-height:178px;padding:31px 35px 27px}
+  .dialog-head h2{font-size:clamp(44px,4.5vw,59px);margin:11px 0 7px}
+  .dialog-head p{font-size:10px}
+  .dialog-draft{bottom:18px;inset-inline-start:35px}
+  .dialog-body{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:16px 18px;padding:22px 25px 25px}
+  .dialog-index-note,.dialog-meta-grid.three,.dialog-book-cta{grid-column:1/-1}
+  .dialog-index-note{margin-bottom:0;padding:12px 14px}
+  .dialog-meta-grid.three{margin-bottom:0}
+  .dialog-meta-card{padding:12px 13px}
+  .dialog-forms-section{grid-column:1;margin:0;align-self:start}
+  .dialog-book-location.multi-location{grid-column:2;margin:0;align-self:start}
+  .dialog-section-title{padding:14px 15px 11px}
+  .dialog-section-title h3{font-size:15px}
+  .dialog-section-title>span{width:32px;height:32px;font-size:14px}
+  .dialog-form-head{padding:8px 15px}
+  .dialog-form-row{padding:11px 15px}
+  .dialog-verification{padding:9px 15px}
+  .dialog-location-list .dialog-chapter{padding:11px 13px}
+  .dialog-location-list .dialog-location-grid{padding:11px 13px}
+  .dialog-book-cta{margin-top:0;padding-top:15px}
+}
+
+@media(min-width:760px) and (max-height:760px){
+  .drug-dialog,.drug-dialog-inner{max-height:calc(100dvh - 18px)}
+  .dialog-head{min-height:142px;padding:23px 30px 19px}
+  .dialog-head h2{font-size:43px;margin:8px 0 5px}
+  .dialog-head small{font-size:7px}
+  .dialog-draft{bottom:14px;inset-inline-start:30px;padding:5px 7px}
+  .dialog-body{padding:15px 19px 18px;gap:11px 14px}
+  .dialog-index-note{padding:9px 12px}
+  .dialog-index-note p{font-size:8px;line-height:1.55}
+  .dialog-meta-card{padding:9px 11px}
+  .dialog-meta-card b{font-size:9px}
+  .dialog-section-title{padding:10px 12px 8px}
+  .dialog-section-title h3{font-size:14px}
+  .dialog-form-row{padding:8px 12px}
+  .dialog-form-name>span{width:28px;height:28px}
+  .dialog-verification{padding:8px 12px}
+  .dialog-location-list .dialog-chapter{padding:9px 11px}
+  .dialog-location-list .dialog-location-grid{padding:9px 11px}
+  .dialog-location-grid>div{padding:10px 11px}
+  .dialog-book-cta{padding-top:11px}
+}
+
+@media(max-width:759px){
+  .drug-dialog{width:calc(100vw - 18px);max-height:calc(100dvh - 18px);border-radius:22px}
+  .drug-dialog-inner{max-height:calc(100dvh - 18px);border-radius:22px}
+  .drug-dialog-close{top:10px;margin-inline-end:10px;margin-bottom:-48px}
+  body[dir="rtl"] .drug-dialog-close{margin-inline-start:10px;margin-inline-end:0}
+  .dialog-head{min-height:178px;padding:31px 23px 25px}
+  .dialog-head h2{font-size:clamp(36px,11vw,46px)}
+  .dialog-body{padding:20px 16px 22px}
+}
+
+/* Keep the close control anchored above the internally scrolling content. */
+.drug-dialog-close{
+  position:absolute;
+  top:14px;
+  inset-inline-end:14px;
+  margin:0;
+  float:none;
+}
+body[dir="rtl"] .drug-dialog-close{margin:0}
+@media(max-width:759px){.drug-dialog-close{top:10px;inset-inline-end:10px;margin:0}}
