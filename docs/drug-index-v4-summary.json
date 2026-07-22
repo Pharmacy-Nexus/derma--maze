@@ -1,0 +1,14 @@
+{
+  "rawNamedEntries": 236,
+  "uniqueRecords": 211,
+  "uniqueByChapter": {
+    "bacterial": 53,
+    "fungal": 65,
+    "viral": 62,
+    "parasitic": 34,
+    "mycobacterial": 19
+  },
+  "crossChapterRecords": 20,
+  "formRows": 355,
+  "formReviewRecords": 26
+}
