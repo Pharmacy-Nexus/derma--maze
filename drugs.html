@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07171b">
-  <title>Drug Index | Derma-Maze</title>
-  <meta name="description" content="A bilingual smart drug index for Derma-Maze that separates scientifically relevant dermatology dosage forms from current Egyptian market availability without publishing treatment details from the book.">
+  <title>Drug & Therapeutic Agent Index | Derma-Maze</title>
+  <meta name="description" content="A bilingual smart drug and therapeutic agent index for Derma-Maze that maps scientifically relevant dermatology dosage forms to their chapters while tracking Egyptian market availability separately—without publishing treatment details from the book.">
   <meta name="author" content="Eslam Nasser">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://pharmacy-nexus.github.io/Derma-Maze/drugs.html">
@@ -13,12 +13,12 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_EG">
   <meta property="og:locale:alternate" content="en_US">
-  <meta property="og:title" content="Drug Index | Derma-Maze">
+  <meta property="og:title" content="Drug & Therapeutic Agent Index | Derma-Maze">
   <meta property="og:description" content="Explore dermatology dosage forms and their separately tracked Egyptian availability without exposing the book's therapeutic content.">
   <meta property="og:url" content="https://pharmacy-nexus.github.io/Derma-Maze/drugs.html">
   <meta property="og:image" content="https://pharmacy-nexus.github.io/Derma-Maze/assets/social/og-home.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Drug Index | Derma-Maze">
+  <meta name="twitter:title" content="Drug & Therapeutic Agent Index | Derma-Maze">
   <meta name="twitter:description" content="A bilingual smart locator for dermatology drug forms, Egyptian availability, and book location.">
   <meta name="twitter:image" content="https://pharmacy-nexus.github.io/Derma-Maze/assets/social/og-home.jpg">
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
@@ -34,7 +34,7 @@
   {
     "@context":"https://schema.org",
     "@type":"CollectionPage",
-    "name":"Derma-Maze Drug Index",
+    "name":"Derma-Maze Drug & Therapeutic Agent Index",
     "description":"A searchable smart index that separates dermatology dosage forms from Egyptian market availability without publishing dosing or therapeutic protocols.",
     "url":"https://pharmacy-nexus.github.io/Derma-Maze/drugs.html",
     "inLanguage":["ar","en"],
@@ -86,6 +86,8 @@
             <i></i>
             <div><b id="heroCategoryCount">—</b><span data-drug-i18n="hero.statCategories">تصنيفات</span></div>
             <i></i>
+            <div><b id="heroFormCount">—</b><span data-drug-i18n="hero.statForms">شكل جلدي</span></div>
+            <i></i>
             <div><b>AR / EN</b><span data-drug-i18n="hero.statLang">بحث ثنائي اللغة</span></div>
           </div>
         </div>
@@ -128,6 +130,42 @@
             <div><b data-drug-i18n="truth.egypt">التوفر في مصر</b><p data-drug-i18n="truth.egyptText">حالة منفصلة لكل شكل، ولا تُفترض من الشكل العلمي.</p></div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="master-import-strip" aria-label="Master list import summary">
+      <div class="shell master-import-card reveal">
+        <div class="master-import-copy">
+          <span>MASTER LIST · NORMALIZED</span>
+          <h2 data-drug-i18n="sourceTitle">تم استيراد القائمة الرئيسية</h2>
+          <p data-drug-i18n="sourceText">تم توحيد الأسماء المتكررة والمرادفات مع الاحتفاظ بكل أماكن الظهور داخل الفصول.</p>
+        </div>
+        <div class="master-import-metrics">
+          <article><b id="sourceMentionCount">236</b><span data-drug-i18n="sourceMentions">اسمًا واردًا</span></article>
+          <i></i>
+          <article><b id="sourceUniqueCount">211</b><span data-drug-i18n="sourceUnique">اسمًا فريدًا</span></article>
+          <i></i>
+          <article><b id="sourceCrossCount">20</b><span data-drug-i18n="sourceCross">اسمًا في أكثر من فصل</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="drug-scope-dashboard" aria-labelledby="scopeTitle">
+      <div class="shell">
+        <div class="scope-dashboard-head reveal">
+          <div>
+            <span class="eyebrow">INDEX AT A GLANCE</span>
+            <h2 id="scopeTitle" data-drug-i18n-html="scope.title">خمسة فصول.<br><strong>فهرس واحد ذكي.</strong></h2>
+          </div>
+          <p data-drug-i18n="scope.text">اختَر فصلًا للوصول السريع إلى أدويةه. الأرقام هنا تمثل الأسماء والأشكال المفهرسة، لا عدد البروتوكولات أو الاستخدامات العلاجية.</p>
+        </div>
+        <div class="scope-metrics reveal">
+          <article><small>DRUGS</small><b id="scopeDrugCount">0</b><span data-drug-i18n="scope.drugs">اسمًا مفهرسًا</span></article>
+          <article><small>FORMS</small><b id="scopeFormCount">0</b><span data-drug-i18n="scope.forms">شكلًا جلديًا</span></article>
+          <article><small>CHAPTERS</small><b id="scopeChapterCount">5</b><span data-drug-i18n="scope.chapters">فصول علاجية</span></article>
+          <article><small>MARKET</small><b id="scopePendingCount">0</b><span data-drug-i18n="scope.pending">في انتظار مراجعة مصر</span></article>
+        </div>
+        <div class="scope-chapter-rail reveal" id="scopeChapterRail" aria-label="Quick chapter filters"></div>
       </div>
     </section>
 
@@ -195,18 +233,25 @@
                 <small data-drug-i18n="results.label">SMART DRUG DIRECTORY</small>
                 <h3><span data-drug-i18n="results.showing">عرض</span> <b id="visibleCount">0</b> <span data-drug-i18n="results.entries">اسمًا</span></h3>
               </div>
-              <label class="drug-sort-label">
-                <span data-drug-i18n="results.sort">الترتيب</span>
-                <select id="drugSort">
-                  <option value="az" data-drug-i18n="sort.az">A → Z</option>
-                  <option value="za" data-drug-i18n="sort.za">Z → A</option>
-                  <option value="featured" data-drug-i18n="sort.featured">المميز أولًا</option>
-                </select>
-              </label>
+              <div class="result-tools">
+                <div class="view-switch" role="group" aria-label="View mode">
+                  <button id="gridViewBtn" class="active" type="button" aria-label="Grid view" title="Grid view"><span>▦</span></button>
+                  <button id="compactViewBtn" type="button" aria-label="Compact view" title="Compact view"><span>☷</span></button>
+                </div>
+                <label class="drug-sort-label">
+                  <span data-drug-i18n="results.sort">الترتيب</span>
+                  <select id="drugSort">
+                    <option value="az" data-drug-i18n="sort.az">A → Z</option>
+                    <option value="za" data-drug-i18n="sort.za">Z → A</option>
+                    <option value="featured" data-drug-i18n="sort.featured">المميز أولًا</option>
+                  </select>
+                </label>
+              </div>
             </div>
 
             <div class="active-filter-row" id="activeFilterRow"></div>
             <div class="drug-grid" id="drugGrid"></div>
+            <button class="drug-load-more" id="loadMoreDrugs" type="button" hidden><span>عرض المزيد</span><b>36</b><small>متبقي</small></button>
 
             <div class="drug-empty" id="drugEmpty" hidden>
               <span>⌕</span>

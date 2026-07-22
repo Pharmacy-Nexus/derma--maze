@@ -20,4 +20,8 @@ Do not publish a Supabase `service_role` key. Only the public/publishable key be
 
 ## Drug Index
 
-The new `drugs.html` page is a searchable bilingual index. Its records live in `data/drugs/drugs.js`, its interactions in `js/pages/drugs.js`, and its styles in `css/pages/drugs.css`. The index intentionally stores only light metadata (drug name, broad class, broad route, and related chapter). It does not publish dosing, treatment protocols, diagnostic content, or the book’s protected educational details.
+The new `drugs.html` page is a searchable bilingual index. Its records live in `data/drugs/drugs.js`, its interactions in `js/pages/drugs.js`, and its styles in `css/pages/drugs.css`. The V3 index contains a first-pass set of 44 drug names and 71 dermatology-related dosage forms, organized by chapter. Egyptian availability remains a separate pending field until dated market verification. The page does not publish dosing, treatment protocols, diagnostic content, or the book’s protected educational details.
+
+## Drug Index V4
+
+The Drug Index now imports the complete user-provided master list: 236 named mentions normalized into 211 searchable records. See `docs/DRUG-INDEX-V4-NOTES.md` for normalization and review rules.
