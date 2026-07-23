@@ -409,3 +409,6 @@ html[dir="ltr"] .vir-chapter-next-grid>a:last-child{text-align:right}
 /* Full chapter reset */
 .vir-reset-all{margin-top:9px;border-color:rgba(181,56,56,.25)!important;color:#8f2f2f!important;background:rgba(181,56,56,.055)!important}
 .vir-reset-all:hover{background:rgba(181,56,56,.11)!important;border-color:rgba(181,56,56,.42)!important}
+
+/* V5 unified brand */
+.vir-page{--vir-ink:#0b1730;--vir-ink-2:#13264a;--vir-ink-3:#1d3560;--vir-purple:#c7a35a;--vir-purple-soft:#e3c98f;--vir-cream:#f3efe7;--vir-paper:#fffdf8;--vir-violet:#9b7838;--vir-muted:#687084;--vir-line:rgba(11,23,48,.13)}

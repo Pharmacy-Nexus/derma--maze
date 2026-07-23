@@ -401,3 +401,6 @@ html[dir="ltr"] .bac-chapter-next-grid>a:last-child{text-align:right}
 /* Full chapter reset */
 .bac-reset-all{margin-top:9px;border-color:rgba(181,56,56,.25)!important;color:#8f2f2f!important;background:rgba(181,56,56,.055)!important}
 .bac-reset-all:hover{background:rgba(181,56,56,.11)!important;border-color:rgba(181,56,56,.42)!important}
+
+/* V5 unified brand */
+.bac-page{--bac-ink:#0b1730;--bac-ink-2:#13264a;--bac-ink-3:#1d3560;--bac-gold:#c7a35a;--bac-gold-soft:#e3c98f;--bac-cream:#f3efe7;--bac-paper:#fffdf8;--bac-teal:#9b7838;--bac-muted:#687084;--bac-line:rgba(11,23,48,.13)}

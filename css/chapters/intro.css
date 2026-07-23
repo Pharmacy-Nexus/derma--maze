@@ -409,3 +409,6 @@ html[dir="ltr"] .intro-chapter-next-grid>a:last-child{text-align:right}
 /* Full chapter reset */
 .intro-reset-all{margin-top:9px;border-color:rgba(181,56,56,.25)!important;color:#8f2f2f!important;background:rgba(181,56,56,.055)!important}
 .intro-reset-all:hover{background:rgba(181,56,56,.11)!important;border-color:rgba(181,56,56,.42)!important}
+
+/* V5 unified brand */
+.intro-page{--intro-ink:#0b1730;--intro-ink-2:#13264a;--intro-ink-3:#1d3560;--intro-blue:#c7a35a;--intro-blue-soft:#e3c98f;--intro-cream:#f3efe7;--intro-paper:#fffdf8;--intro-teal:#9b7838;--intro-muted:#687084;--intro-line:rgba(11,23,48,.13)}

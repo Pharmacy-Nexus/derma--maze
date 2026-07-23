@@ -409,3 +409,6 @@ html[dir="ltr"] .myco-chapter-next-grid>a:last-child{text-align:right}
 /* Full chapter reset */
 .myco-reset-all{margin-top:9px;border-color:rgba(181,56,56,.25)!important;color:#8f2f2f!important;background:rgba(181,56,56,.055)!important}
 .myco-reset-all:hover{background:rgba(181,56,56,.11)!important;border-color:rgba(181,56,56,.42)!important}
+
+/* V5 unified brand */
+.myco-page{--myco-ink:#0b1730;--myco-ink-2:#13264a;--myco-ink-3:#1d3560;--myco-blue:#c7a35a;--myco-blue-soft:#e3c98f;--myco-cream:#f3efe7;--myco-paper:#fffdf8;--myco-teal:#9b7838;--myco-muted:#687084;--myco-line:rgba(11,23,48,.13)}
