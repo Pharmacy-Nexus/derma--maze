@@ -1,19 +1,19 @@
 const chapterData = {
   ar: [
-    {n:'01',title:'Introduction to Dermatology',tag:'FOUNDATION',desc:'بداية الرحلة: تركيب الجلد، طبقات البشرة، الـdermis، والـprimary والـsecondary lesions.',topics:['Skin structure','Primary lesions','Secondary lesions'],img:'assets/images/chapters/intro/intro-01.webp',accent:'#4aa9d8',url:'intro.html',questions:45,cases:10,images:20},
-    {n:'02',title:'Bacterial Skin Infections',tag:'BACTERIAL',desc:'من impetigo السطحي إلى cellulitis والـred flags، مع الكيسات واختيارات العلاج.',topics:['Impetigo','Cellulitis','Folliculitis'],img:'assets/images/chapters/bacterial/bacterial-01.webp',accent:'#f4bd22',url:'bacterial.html',questions:150,cases:45,images:15},
-    {n:'03',title:'Fungal Infections',tag:'FUNGAL',desc:'Tinea بأنواعها، candidiasis، pityriasis versicolor، onychomycosis، والعلاج الموضعي والجهازي.',topics:['Tinea pedis','Tinea capitis','Onychomycosis'],img:'assets/images/chapters/fungal/fungal-01.webp',accent:'#6ebd43',url:'fungal.html',questions:150,cases:45,images:15},
-    {n:'04',title:'Viral Skin Diseases',tag:'VIRAL',desc:'HSV وVZV وHPV وmolluscum وHFMD والطفوح الفيروسية بمفاتيح تمييز سريرية.',topics:['HSV','Herpes zoster','Viral exanthems'],img:'assets/images/chapters/viral/viral-01.webp',accent:'#b052a0',url:'viral.html',questions:150,cases:45,images:15},
-    {n:'05',title:'Parasitic Infestation',tag:'PARASITIC',desc:'Scabies وpediculosis وleishmaniasis وCLM، مع الوقاية والعلاج ومنع إعادة العدوى.',topics:['Scabies','Pediculosis','Leishmaniasis'],img:'assets/images/chapters/parasitic/parasitic-01.webp',accent:'#24a8c7',url:'parasitic.html',questions:80,cases:25,images:10},
-    {n:'06',title:'Mycobacterial Skin Diseases',tag:'MYCOBACTERIAL',desc:'Leprosy وcutaneous TB والمناعة الخلوية والتفاعلات والعلاج متعدد الأدوية.',topics:['Leprosy','Leprosy reactions','Cutaneous TB'],img:'assets/images/chapters/myco/myco-01.webp',accent:'#d36a22',url:'myco.html',questions:100,cases:30,images:10}
+    {n:'01',title:'Introduction to Dermatology',tag:'FOUNDATION',desc:'مدخل منظم للفصل التأسيسي مع تدريب تفاعلي، صور، وحفظ للتقدم.',topics:['Study Mode','Image Review','Saved Progress'],img:'assets/images/chapters/intro/intro-01.webp',accent:'#c7a35a',url:'intro.html',questions:45,cases:10,images:20},
+    {n:'02',title:'Bacterial Skin Infections',tag:'BACTERIAL',desc:'صفحة مستقلة للمراجعة التفاعلية، الكيسات، الصور، وأنماط الامتحان.',topics:['Study Mode','Clinical Cases','Exam Mode'],img:'assets/images/chapters/bacterial/bacterial-01.webp',accent:'#c7a35a',url:'bacterial.html',questions:150,cases:45,images:15},
+    {n:'03',title:'Fungal Infections',tag:'FUNGAL',desc:'تدريب منظم على موضوعات الفصل مع بحث، فلاتر، ومراجعة ثنائية اللغة.',topics:['Smart Filters','Clinical Cases','Bookmarks'],img:'assets/images/chapters/fungal/fungal-01.webp',accent:'#c7a35a',url:'fungal.html',questions:150,cases:45,images:15},
+    {n:'04',title:'Viral Skin Diseases',tag:'VIRAL',desc:'بنك أسئلة مستقل يجمع الأسئلة، الكيسات، والصور في تجربة واحدة.',topics:['Question Bank','Image Review','Saved Progress'],img:'assets/images/chapters/viral/viral-01.webp',accent:'#c7a35a',url:'viral.html',questions:150,cases:45,images:15},
+    {n:'05',title:'Parasitic Infestation',tag:'PARASITIC',desc:'مراجعة مركزة للفصل مع أوضاع دراسة وامتحان وحفظ للنتائج.',topics:['Study Mode','Exam Mode','Bookmarks'],img:'assets/images/chapters/parasitic/parasitic-01.webp',accent:'#c7a35a',url:'parasitic.html',questions:80,cases:25,images:10},
+    {n:'06',title:'Mycobacterial Skin Diseases',tag:'MYCOBACTERIAL',desc:'صفحة مخصصة للفصل مع أسئلة ثنائية اللغة ومتابعة للتقدم.',topics:['Question Bank','Clinical Cases','Progress'],img:'assets/images/chapters/myco/myco-01.webp',accent:'#c7a35a',url:'myco.html',questions:100,cases:30,images:10}
   ],
   en: [
-    {n:'01',title:'Introduction to Dermatology',tag:'FOUNDATION',desc:'The starting point: skin structure, epidermal layers, dermis, and primary and secondary lesions.',topics:['Skin structure','Primary lesions','Secondary lesions'],img:'assets/images/chapters/intro/intro-01.webp',accent:'#4aa9d8',url:'intro.html',questions:45,cases:10,images:20},
-    {n:'02',title:'Bacterial Skin Infections',tag:'BACTERIAL',desc:'From superficial impetigo to cellulitis and red flags, with clinical cases and treatment selection.',topics:['Impetigo','Cellulitis','Folliculitis'],img:'assets/images/chapters/bacterial/bacterial-01.webp',accent:'#f4bd22',url:'bacterial.html',questions:150,cases:45,images:15},
-    {n:'03',title:'Fungal Infections',tag:'FUNGAL',desc:'Tinea patterns, candidiasis, pityriasis versicolor, onychomycosis, and topical versus systemic therapy.',topics:['Tinea pedis','Tinea capitis','Onychomycosis'],img:'assets/images/chapters/fungal/fungal-01.webp',accent:'#6ebd43',url:'fungal.html',questions:150,cases:45,images:15},
-    {n:'04',title:'Viral Skin Diseases',tag:'VIRAL',desc:'HSV, VZV, HPV, molluscum, HFMD, and viral exanthems presented through clinical diagnostic clues.',topics:['HSV','Herpes zoster','Viral exanthems'],img:'assets/images/chapters/viral/viral-01.webp',accent:'#b052a0',url:'viral.html',questions:150,cases:45,images:15},
-    {n:'05',title:'Parasitic Infestation',tag:'PARASITIC',desc:'Scabies, pediculosis, leishmaniasis, and CLM with treatment, prevention, and reinfection control.',topics:['Scabies','Pediculosis','Leishmaniasis'],img:'assets/images/chapters/parasitic/parasitic-01.webp',accent:'#24a8c7',url:'parasitic.html',questions:80,cases:25,images:10},
-    {n:'06',title:'Mycobacterial Skin Diseases',tag:'MYCOBACTERIAL',desc:'Leprosy, cutaneous TB, cell-mediated immunity, reactions, and multidrug treatment principles.',topics:['Leprosy','Leprosy reactions','Cutaneous TB'],img:'assets/images/chapters/myco/myco-01.webp',accent:'#d36a22',url:'myco.html',questions:100,cases:30,images:10}
+    {n:'01',title:'Introduction to Dermatology',tag:'FOUNDATION',desc:'A structured foundation chapter with interactive practice, images, and saved progress.',topics:['Study Mode','Image Review','Saved Progress'],img:'assets/images/chapters/intro/intro-01.webp',accent:'#c7a35a',url:'intro.html',questions:45,cases:10,images:20},
+    {n:'02',title:'Bacterial Skin Infections',tag:'BACTERIAL',desc:'A dedicated review page with interactive practice, cases, images, and exam modes.',topics:['Study Mode','Clinical Cases','Exam Mode'],img:'assets/images/chapters/bacterial/bacterial-01.webp',accent:'#c7a35a',url:'bacterial.html',questions:150,cases:45,images:15},
+    {n:'03',title:'Fungal Infections',tag:'FUNGAL',desc:'Structured chapter practice with search, filters, and bilingual review.',topics:['Smart Filters','Clinical Cases','Bookmarks'],img:'assets/images/chapters/fungal/fungal-01.webp',accent:'#c7a35a',url:'fungal.html',questions:150,cases:45,images:15},
+    {n:'04',title:'Viral Skin Diseases',tag:'VIRAL',desc:'An independent question bank combining questions, cases, and images in one experience.',topics:['Question Bank','Image Review','Saved Progress'],img:'assets/images/chapters/viral/viral-01.webp',accent:'#c7a35a',url:'viral.html',questions:150,cases:45,images:15},
+    {n:'05',title:'Parasitic Infestation',tag:'PARASITIC',desc:'Focused chapter review with Study Mode, Exam Mode, and saved results.',topics:['Study Mode','Exam Mode','Bookmarks'],img:'assets/images/chapters/parasitic/parasitic-01.webp',accent:'#c7a35a',url:'parasitic.html',questions:80,cases:25,images:10},
+    {n:'06',title:'Mycobacterial Skin Diseases',tag:'MYCOBACTERIAL',desc:'A dedicated chapter page with bilingual questions and progress tracking.',topics:['Question Bank','Clinical Cases','Progress'],img:'assets/images/chapters/myco/myco-01.webp',accent:'#c7a35a',url:'myco.html',questions:100,cases:30,images:10}
   ]
 };
 
@@ -55,8 +55,7 @@ function renderChapters(lang = window.currentDMLang || 'ar') {
 
   activeChapterIndex = 0;
   requestAnimationFrame(() => {
-    const first = rail.querySelector('.chapter-slide');
-    if (first) first.scrollIntoView({block:'nearest', inline:'center'});
+    rail.scrollLeft = 0;
     updateChapterUI(0);
   });
 }
