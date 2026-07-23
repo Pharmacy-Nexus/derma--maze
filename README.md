@@ -25,3 +25,11 @@ The new `drugs.html` page is a searchable bilingual index. Its records live in `
 ## Drug Index V4
 
 The Drug Index now imports the complete user-provided master list: 236 named mentions normalized into 211 searchable records. See `docs/DRUG-INDEX-V4-NOTES.md` for normalization and review rules.
+
+
+## V5 brand update
+- Unified navy and muted-gold design system.
+- Added animated maze loading screen.
+- Redesigned home page around printed-book sales and companion-platform value.
+- Removed Updates and Shipping & Returns from public navigation and sitemap.
+- Clarified that no PDF edition is available.
