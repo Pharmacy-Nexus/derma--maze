@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#0b1730" name="theme-color"/>
+<title>لوحة المذاكرة | Derma-Maze</title>
+<meta content="تابع تقدمك في فصول Derma-Maze، أكمل من آخر مكان، احفظ ملاحظاتك، وخذ نسخة احتياطية من بيانات المذاكرة على جهازك." name="description"/>
+<meta content="index, follow" name="robots"/>
+<link href="https://pharmacy-nexus.github.io/derma-maze/dashboard.html" rel="canonical"/>
+<link href="assets/icons/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="assets/icons/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="manifest.webmanifest" rel="manifest"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;family=DM+Serif+Display&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="css/global.css?v=6.0.0" rel="stylesheet"/>
+<link href="css/pages/dashboard.css?v=6.0.0" rel="stylesheet"/>
+<link href="css/production-v6.css?v=6.0.0" rel="stylesheet"/>
+</head>
+<body class="dashboard-page dm-loading">
+<div aria-hidden="true" class="maze-loader" id="mazeLoader">
+<div class="maze-loader-inner">
+<svg aria-label="Derma-Maze loading" class="maze-loader-mark" role="img" viewbox="0 0 120 120">
+<rect class="maze-loader-frame" height="104" rx="22" width="104" x="8" y="8"></rect>
+<path class="maze-loader-path" d="M22 22H98V98H22V38H84V84H38V52H70V70H52V61H61"></path>
+<circle class="maze-loader-start" cx="22" cy="38" r="3.5"></circle>
+<circle class="maze-loader-core" cx="61" cy="61" r="4"></circle>
+</svg>
+<div class="maze-loader-wordmark">DERMA‑MAZE</div>
+<div class="maze-loader-line"><i></i><span>STUDY DASHBOARD</span><i></i></div>
+<small>Continue where you stopped.</small>
+</div>
+</div>
+<div id="scrollProgress"></div><div class="noise"></div>
+<header class="topbar solid-bar">
+<div class="shell nav-wrap">
+<a aria-label="Derma-Maze home" class="logo" href="index.html"><span aria-hidden="true" class="logo-maze"><img alt="" src="assets/icons/favicon.svg"/></span><span class="logo-type"><b>DERMA‑MAZE</b><small>PHARMACOTHERAPY</small></span></a>
+<div class="nav-actions-premium"><button aria-label="Switch language" class="lang-pill" id="langBtn">EN</button><button aria-label="Open menu" class="menu" id="menuBtn"><span></span><span></span></button></div>
+<nav id="mainNav">
+<a data-dash-i18n="nav.home" href="index.html">الرئيسية</a>
+<a data-dash-i18n="nav.chapters" href="index.html#chapters">الفصول</a>
+<a data-dash-i18n="nav.drugs" href="drugs.html">دليل الأدوية</a>
+<a class="active" data-dash-i18n="nav.dashboard" href="dashboard.html">لوحة المذاكرة</a>
+<a class="nav-buy" href="index.html#buy"><span data-dash-i18n="nav.book">الكتاب</span><em>↗</em></a>
+</nav>
+</div>
+</header>
+<main>
+<section class="dashboard-hero">
+<div class="shell dashboard-hero-grid">
+<div class="dashboard-hero-copy reveal">
+<div class="kicker"><span></span><b>YOUR STUDY · YOUR DEVICE</b></div>
+<h1 data-dash-i18n-html="hero.title">ذاكر بتركيز.<br/><strong>وكمّل من مكانك.</strong></h1>
+<p data-dash-i18n="hero.text">لوحة واحدة تجمع تقدم الفصول، نتيجة الأسئلة، هدف اليوم، المفضلة، والملاحظات. البيانات محفوظة محليًا على جهازك ولا تحتاج حسابًا.</p>
+<div class="dashboard-local-note"><i></i><span data-dash-i18n="hero.local">لا يتم رفع ملاحظاتك أو نتائجك إلى خادم.</span></div>
+</div>
+<div class="dashboard-overall-card reveal">
+<div class="dashboard-ring" id="dashboardRing"><div><b id="dashboardCoverage">0%</b><span data-dash-i18n="overall.coverage">التقدم الكلي</span></div></div>
+<div class="dashboard-overall-meta">
+<div><b id="dashboardAnswered">0</b><span data-dash-i18n="overall.answered">تمت إجابتها</span></div>
+<div><b id="dashboardScore">0%</b><span data-dash-i18n="overall.score">نسبة الصحيح</span></div>
+<div><b id="dashboardBookmarks">0</b><span data-dash-i18n="overall.saved">محفوظ</span></div>
+</div>
+</div>
+</div>
+</section>
+<section class="dashboard-main">
+<div class="shell dashboard-grid">
+<article class="dashboard-panel continue-panel reveal">
+<div class="continue-copy">
+<small data-dash-i18n="continue.eyebrow">CONTINUE STUDYING</small>
+<h2 id="continueTitle">ابدأ رحلتك من الفصل الأول</h2>
+<p id="continueText">هنحفظ آخر فصل وآخر قسم فتحته علشان ترجع له مباشرة.</p>
+<div class="continue-actions"><a class="button gold" href="intro.html#question-bank" id="continueLink"><span data-dash-i18n="continue.cta">كمّل المذاكرة</span><span>↗</span></a><a class="button ghost" data-dash-i18n="continue.all" href="index.html#chapters">كل الفصول</a></div>
+</div>
+<div class="continue-visual"><div class="continue-progress-card"><header><b id="continueChapterLabel">Chapter 01</b><span id="continuePercent">0%</span></header><div class="continue-bar"><i id="continueBar"></i></div><p id="continueMeta">0 / 45 questions answered</p></div></div>
+</article>
+<article class="dashboard-panel daily-panel reveal">
+<header class="dashboard-panel-head"><div><small>DAILY RHYTHM</small><h2 data-dash-i18n="daily.title">هدف اليوم</h2></div><p data-dash-i18n="daily.text">الإجابات الجديدة اليوم فقط.</p></header>
+<div class="daily-panel-body">
+<div class="daily-head"><div class="daily-score"><b id="todayAnswered">0</b><span data-dash-i18n="daily.answered">سؤال اليوم</span></div><div class="daily-target-control"><label data-dash-i18n="daily.target" for="dailyTarget">الهدف</label><input id="dailyTarget" max="300" min="1" type="number" value="20"/></div></div>
+<div class="daily-track"><i id="dailyBar"></i></div><div class="daily-caption"><span id="dailyCaption">0 / 20</span><span id="dailyRemaining">متبقي 20</span></div>
+<div class="streak-strip"><div><b id="currentStreak">0</b><span data-dash-i18n="daily.streak">أيام متتالية</span></div><div><b id="activeDays">0</b><span data-dash-i18n="daily.active">أيام مذاكرة</span></div><div><b id="notesCount">0</b><span data-dash-i18n="daily.notes">ملاحظات</span></div></div>
+</div>
+</article>
+<article class="dashboard-panel backup-panel reveal">
+<header class="dashboard-panel-head"><div><small>LOCAL BACKUP</small><h2 data-dash-i18n="backup.title">نسخة احتياطية</h2></div></header>
+<div class="backup-panel-body"><p data-dash-i18n="backup.text">لأن البيانات محفوظة على المتصفح، صدّر نسخة قبل تغيير الجهاز أو مسح بيانات المتصفح.</p><div class="backup-actions"><button class="dashboard-secondary-btn" data-dash-i18n="backup.export" id="exportData">تصدير البيانات</button><label class="dashboard-secondary-btn" data-dash-i18n="backup.import" for="importData">استيراد نسخة</label><input accept="application/json" class="import-input" id="importData" type="file"/><button class="dashboard-secondary-btn danger" data-dash-i18n="backup.reset" id="resetData">مسح بيانات المذاكرة</button></div></div>
+</article>
+<article class="dashboard-panel chapters-panel reveal">
+<header class="dashboard-panel-head"><div><small>CHAPTER PROGRESS</small><h2 data-dash-i18n="chapters.title">تقدم الفصول</h2></div><p data-dash-i18n="chapters.text">التقدم = نسبة الأسئلة التي أجبت عنها من بنك الفصل.</p></header>
+<div class="dashboard-chapter-grid" id="dashboardChapterGrid"></div>
+</article>
+<article class="dashboard-panel notes-panel reveal">
+<header class="dashboard-panel-head"><div><small>PERSONAL NOTES</small><h2 data-dash-i18n="notes.title">ملاحظاتك</h2></div><p data-dash-i18n="notes.text">اكتب ملاحظاتك أنت؛ الموقع لا ينسخ محتوى الكتاب.</p></header>
+<div class="notes-toolbar"><input id="notesSearch" placeholder="ابحث في الملاحظات…" type="search"/><select id="notesChapterFilter"><option value="all">كل الفصول</option></select><button data-dash-i18n="notes.new" id="newNote">ملاحظة جديدة</button></div>
+<div class="dashboard-notes-list" id="dashboardNotesList"></div>
+</article>
+</div>
+</section>
+</main>
+<footer><div class="shell footer-grid"><a class="logo footer-logo" href="index.html"><span class="logo-maze"><img alt="" src="assets/icons/favicon.svg"/></span><span class="logo-type"><b>DERMA‑MAZE</b><small>From clinical signs to confident decisions</small></span></a><p data-dash-i18n="footer.text">لوحة متابعة محلية للمذاكرة، وليست حسابًا سحابيًا أو بديلًا عن الكتاب.</p><div class="footer-links"><span class="footer-primary-links"><a data-dash-i18n="nav.chapters" href="index.html#chapters">الفصول</a><a data-dash-i18n="nav.drugs" href="drugs.html">دليل الأدوية</a><a data-dash-i18n="nav.dashboard" href="dashboard.html">لوحة المذاكرة</a><a data-dash-i18n="nav.book" href="index.html#buy">الكتاب</a></span><span class="footer-legal-links"><a href="about.html">عن المؤلف</a><a href="copyright.html">حقوق النشر</a><a href="disclaimer.html">إخلاء المسؤولية</a><a href="privacy.html">الخصوصية</a></span></div><small>© 2026 Eslam Nasser. All rights reserved.</small></div></footer>
+<dialog class="note-editor-dialog" id="noteDialog">
+<form id="noteForm" method="dialog"><button aria-label="Close" class="note-dialog-close" value="cancel">×</button><small>PERSONAL NOTE</small><h2 id="noteDialogTitle">ملاحظة جديدة</h2><label><span data-dash-i18n="notes.chapter">الفصل</span><select id="noteChapter"></select></label><label><span data-dash-i18n="notes.body">الملاحظة</span><textarea id="noteBody" maxlength="2500" required=""></textarea></label><input id="noteId" type="hidden"/><div><button class="dashboard-secondary-btn" data-dash-i18n="notes.cancel" value="cancel">إلغاء</button><button class="button gold" data-dash-i18n="notes.save" id="saveNote" type="submit" value="default">حفظ</button></div></form>
+</dialog>
+<div class="dashboard-toast" id="dashboardToast"></div>
+<script src="js/core/site-config.js?v=6.0.0"></script>
+<script src="js/core/shared.js?v=6.0.0"></script>
+<script src="js/core/study-tracker.js?v=6.0.0"></script>
+<script src="js/pages/dashboard.js?v=6.0.0"></script>
+</body></html>

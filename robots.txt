@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pharmacy-nexus.github.io/Derma-Maze/sitemap.xml
+Sitemap: https://pharmacy-nexus.github.io/derma-maze/sitemap.xml
 
-Disallow: /Derma-Maze/admin-updates.html
+Disallow: /derma-maze/admin-updates.html
+Disallow: /derma-maze/updates.html
+Disallow: /derma-maze/shipping-returns.html
