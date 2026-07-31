@@ -71,13 +71,12 @@ if 'createSignedUrl' not in admin_js or 'createSignedUrl' not in updates_js:
 
 # 4) Version/cache consistency.
 site_config = (ROOT / 'js/core/site-config.js').read_text(encoding='utf-8')
-if "version: '6.3.0'" not in site_config:
-    fail('Site config version is not 6.3.0.')
-expected_version = '6.3.0'
+version_match = re.search(r"version:\s*'([^']+)'", site_config)
+if not version_match:
+    fail('Site config version is missing or unreadable.')
+expected_version = version_match.group(1)
 for html in sorted(ROOT.glob('*.html')):
     text = html.read_text(encoding='utf-8')
-    if re.search(r'v=6\.[012]\.0', text):
-        fail(f'Old cache-busting version remains in {html.name}.')
     for ref in attr_pattern.findall(text):
         clean_path = urlsplit(ref).path.lower()
         if is_local(ref) and clean_path.endswith(('.css', '.js')) and f'v={expected_version}' not in ref:
