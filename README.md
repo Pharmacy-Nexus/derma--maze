@@ -24,7 +24,7 @@ A bilingual static companion platform for the printed **Derma-Maze Volume 1: Pha
 
 ## Current release
 
-**V6.3.0 — Production Cleanup**
+**V6.3.2 — Production Cleanup**
 
 This release keeps the existing product behavior and scientific content while preparing a cleaner base for upcoming content changes.
 
