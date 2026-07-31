@@ -1,3 +1,5 @@
+/* Derma-Maze V6.1 — isolated home motion layer.
+   This file does not change question-bank, dashboard, or chapter logic. */
 
 .home-page{--motion-ease:cubic-bezier(.2,.78,.22,1);--motion-slow:1.05s}
 
@@ -93,7 +95,7 @@
 }
 
 
-/* Buy section motion refinement — V6.3.1 */
+/* Buy section motion refinement — V6.3.2 */
 .home-page .buy-card{grid-template-columns:.98fr 1.02fr;min-height:640px}
 .home-page .buy-copy:before{inset:10% 0 10% auto}
 .home-page .buy-copy>span,.home-page .buy-copy h2,.home-page .buy-copy>p,.home-page .buy-points,.home-page .buy-order-panel,.home-page .buy-actions,.home-page .order-live-note{transition:transform .75s var(--motion-ease),opacity .75s var(--motion-ease)}
@@ -110,4 +112,93 @@
   .home-page .buy-art.motion-book-stage{order:1}
   .home-page .buy-copy{order:0}
   .home-page .buy-copy:before{display:none}
+}
+
+
+/* V6.3.2 — robust order section fallback and sizing fix */
+/* Core content must never depend on IntersectionObserver or motion JS. */
+.home-page .buy-card .buy-copy>span,
+.home-page .buy-card .buy-copy>h2,
+.home-page .buy-card .buy-copy>p,
+.home-page .buy-card .buy-points,
+.home-page .buy-card .buy-order-panel,
+.home-page .buy-card .buy-actions,
+.home-page .buy-card .order-live-note,
+.home-page .buy-card .replace-note{
+  opacity:1!important;
+  transform:none!important;
+  filter:none!important;
+}
+
+/* Keep one clean entrance animation on the copy container only. */
+.home-page .buy-copy.motion-ready{opacity:0!important;transform:translate3d(52px,0,0)!important;filter:blur(7px)}
+html[dir="ltr"] .home-page .buy-copy.motion-ready{transform:translate3d(-52px,0,0)!important}
+.home-page .buy-copy.motion-ready.motion-visible{opacity:1!important;transform:none!important;filter:none!important}
+
+/* Solid static fallback: remains premium even when enhancement JS is unavailable. */
+.home-page .buy-art:not(.motion-book-stage){
+  position:relative;
+  min-height:640px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 50% 43%,rgba(199,163,90,.2),transparent 28%),
+    radial-gradient(circle at 20% 85%,rgba(38,70,126,.3),transparent 34%),
+    linear-gradient(145deg,#071126,#0b1730 54%,#13264a);
+}
+.home-page .buy-art:not(.motion-book-stage):before{
+  content:"";
+  position:absolute;
+  width:min(72%,430px);
+  aspect-ratio:1;
+  border:1px solid rgba(217,189,130,.2);
+  border-radius:50%;
+  box-shadow:0 0 0 56px rgba(199,163,90,.03),0 0 0 112px rgba(199,163,90,.014);
+}
+.home-page .buy-art:not(.motion-book-stage)>img{
+  width:clamp(285px,58%,355px);
+  height:auto;
+  aspect-ratio:270/398;
+  object-fit:cover;
+  border-radius:8px 20px 20px 8px;
+  transform:rotate(-5deg);
+  filter:drop-shadow(-28px 36px 32px rgba(0,0,0,.48));
+  position:relative;
+  z-index:2;
+}
+.home-page .buy-art:not(.motion-book-stage)>div{display:none}
+
+/* Interactive book: larger and better balanced inside the sales panel. */
+.home-page .buy-art.motion-book-stage{min-height:640px;padding:34px 24px 24px}
+.sales-book-scene{width:min(100%,650px);height:520px}
+.sales-book{width:320px;height:472px}
+.sales-book.is-open{transform:translateX(145px) rotateX(calc(2deg + var(--tilt-y))) rotateY(calc(-3deg + var(--tilt-x))) rotateZ(0)}
+.sales-preview-thumb{width:70px;height:88px}
+.sales-preview-collection{gap:12px;padding:11px}
+.sales-preview-hint{font-size:10px}
+
+@media(max-width:1180px){
+  .sales-book{width:290px;height:427px}
+  .sales-book-scene{height:480px}
+  .sales-book.is-open{transform:translateX(118px) rotateX(calc(2deg + var(--tilt-y))) rotateY(calc(-3deg + var(--tilt-x))) rotateZ(0)}
+}
+@media(max-width:980px){
+  .home-page .buy-card{grid-template-columns:1fr!important}
+  .home-page .buy-copy{order:0!important}
+  .home-page .buy-art{order:1!important}
+  .home-page .buy-art.motion-book-stage,
+  .home-page .buy-art:not(.motion-book-stage){min-height:610px}
+}
+@media(max-width:680px){
+  .home-page .buy-art.motion-book-stage,
+  .home-page .buy-art:not(.motion-book-stage){min-height:510px;padding-inline:10px}
+  .sales-book-scene{height:390px}
+  .sales-book{width:225px;height:332px}
+  .sales-book.is-open{transform:translateX(72px) rotateX(calc(2deg + var(--tilt-y))) rotateY(calc(-3deg + var(--tilt-x))) rotateZ(0)}
+  .sales-book-control{width:38px;height:38px}
+  .sales-preview-thumb{width:54px;height:69px}
+  .sales-preview-hint{font-size:9px;padding-inline:15px}
+  .home-page .buy-art:not(.motion-book-stage)>img{width:235px}
 }
