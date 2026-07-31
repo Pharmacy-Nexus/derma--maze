@@ -1,20 +1,26 @@
 {
-  "version": "1.0-clean-structure",
-  "public_pages": [
+  "release": "6.3.2",
+  "stack": ["HTML5", "CSS", "Vanilla JavaScript"],
+  "active_pages": [
     "index.html",
+    "dashboard.html",
+    "drugs.html",
     "intro.html",
     "bacterial.html",
     "fungal.html",
     "viral.html",
     "parasitic.html",
     "myco.html",
-    "updates.html",
-    "admin-updates.html",
     "about.html",
+    "privacy.html",
     "copyright.html",
     "disclaimer.html",
-    "shipping-returns.html",
-    "privacy.html"
+    "404.html"
+  ],
+  "paused_pages": [
+    "updates.html",
+    "admin-updates.html",
+    "shipping-returns.html"
   ],
   "question_counts": {
     "intro": 45,
@@ -22,7 +28,15 @@
     "fungal": 150,
     "viral": 150,
     "parasitic": 80,
-    "myco": 100
+    "myco": 100,
+    "total": 675
   },
-  "notes": "Root page URLs remain stable; implementation files are grouped by responsibility."
+  "drug_records": 211,
+  "tests": [
+    "tests/static-smoke.py",
+    "tests/study-backup-smoke.cjs",
+    "tests/content-integrity.cjs",
+    "tests/run-all.py"
+  ],
+  "notes": "Root page URLs remain stable. Runtime filenames are version-neutral; cache versions are controlled separately."
 }
