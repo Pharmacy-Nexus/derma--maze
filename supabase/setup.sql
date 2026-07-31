@@ -1,6 +1,6 @@
-
--- DERMA-MAZE UPDATE CENTER — ONE-TIME SUPABASE SETUP
--- Run this file in Supabase Dashboard > SQL Editor.
+-- DERMA-MAZE UPDATE CENTER — ONE-TIME SUPABASE SETUP (V6.2)
+-- Run in Supabase Dashboard > SQL Editor for a new project.
+-- For an existing project, run security-hardening-v6-2.sql instead.
 
 create extension if not exists pgcrypto;
 
@@ -46,6 +46,7 @@ create table if not exists public.derma_updates (
   summary_en text not null,
   content_ar text not null default '',
   content_en text not null default '',
+  -- Store Storage object paths, not public URLs.
   cover_image text,
   images jsonb not null default '[]'::jsonb,
   tags text[] not null default '{}',
@@ -59,11 +60,19 @@ create index if not exists derma_updates_status_published_idx on public.derma_up
 create index if not exists derma_updates_category_idx on public.derma_updates(category);
 
 create or replace function public.set_updated_at()
-returns trigger language plpgsql set search_path=public as $$
-begin new.updated_at = now(); return new; end; $$;
+returns trigger
+language plpgsql
+set search_path = public
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
 
 drop trigger if exists derma_updates_set_updated_at on public.derma_updates;
-create trigger derma_updates_set_updated_at before update on public.derma_updates
+create trigger derma_updates_set_updated_at
+before update on public.derma_updates
 for each row execute function public.set_updated_at();
 
 alter table public.derma_updates enable row level security;
@@ -94,13 +103,66 @@ create policy "Update admins can delete updates"
 on public.derma_updates for delete to authenticated
 using ((select public.is_updates_admin()));
 
-grant select on public.derma_updates to anon;
-grant select, insert, update, delete on public.derma_updates to authenticated;
+-- Do not expose created_by to browser clients.
+revoke all on table public.derma_updates from anon, authenticated;
+grant select (
+  id, slug, status, category, featured, version, chapter,
+  title_ar, title_en, summary_ar, summary_en, content_ar, content_en,
+  cover_image, images, tags, published_at, created_at, updated_at
+) on table public.derma_updates to anon, authenticated;
+grant insert (
+  slug, status, category, featured, version, chapter,
+  title_ar, title_en, summary_ar, summary_en, content_ar, content_en,
+  cover_image, images, tags, published_at
+) on table public.derma_updates to authenticated;
+grant update (
+  slug, status, category, featured, version, chapter,
+  title_ar, title_en, summary_ar, summary_en, content_ar, content_en,
+  cover_image, images, tags, published_at
+) on table public.derma_updates to authenticated;
+grant delete on table public.derma_updates to authenticated;
+
 grant select on public.update_admins to authenticated;
 
+-- Private bucket. Public visitors receive short-lived signed URLs only for media
+-- referenced by an already-published update.
 insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
-values ('updates-media','updates-media',true,5242880,array['image/jpeg','image/png','image/webp'])
-on conflict (id) do update set public=true,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
+values ('updates-media','updates-media',false,5242880,array['image/jpeg','image/png','image/webp'])
+on conflict (id) do update
+set public=false,
+    file_size_limit=excluded.file_size_limit,
+    allowed_mime_types=excluded.allowed_mime_types;
+
+create or replace function public.is_published_update_media(object_name text)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.derma_updates
+    where status = 'published'
+      and published_at is not null
+      and published_at <= now()
+      and (
+        cover_image = object_name
+        or images @> jsonb_build_array(object_name)
+      )
+  );
+$$;
+
+revoke all on function public.is_published_update_media(text) from public;
+grant execute on function public.is_published_update_media(text) to anon, authenticated;
+
+drop policy if exists "Published update media can be read" on storage.objects;
+create policy "Published update media can be read"
+on storage.objects for select to anon, authenticated
+using (
+  bucket_id='updates-media'
+  and (select public.is_published_update_media(name))
+);
 
 drop policy if exists "Update admins can read media metadata" on storage.objects;
 create policy "Update admins can read media metadata"
@@ -124,6 +186,6 @@ on storage.objects for delete to authenticated
 using (bucket_id='updates-media' and (select public.is_updates_admin()));
 
 -- FINAL MANUAL STEP
--- 1) In Supabase Dashboard > Authentication > Users, create the admin user.
--- 2) Copy that user's UUID and run:
+-- 1) In Authentication > Users, create the admin user.
+-- 2) Copy its UUID and run:
 -- insert into public.update_admins (user_id) values ('PASTE_AUTH_USER_UUID_HERE');
