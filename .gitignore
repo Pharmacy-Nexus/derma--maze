@@ -7,3 +7,6 @@ Thumbs.db
 # Local temporary files
 *.log
 *.tmp
+
+# Local Supabase browser config. Keep only config.example.js in the repository.
+supabase/config.js

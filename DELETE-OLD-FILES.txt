@@ -1,0 +1,5 @@
+Before deploying this patch, delete these files from the repository:
+
+supabase/config.js
+
+The full-site ZIP is safer because it already omits them.

@@ -16,7 +16,7 @@ A static bilingual dermatology pharmacotherapy companion built for GitHub Pages.
 
 Upload the **contents of this folder** to the repository root and enable GitHub Pages from the `main` branch and `/ (root)` directory.
 
-Do not publish a Supabase `service_role` key. Only the public/publishable key belongs in `supabase/config.js`, with Row Level Security enabled.
+Do not publish a Supabase `service_role` key. Only the public/publishable key belongs in a local `supabase/config.js` copied from `config.example.js`; the file is ignored by Git, and Row Level Security must remain enabled.
 
 ## Drug Index
 
@@ -33,3 +33,12 @@ The Drug Index now imports the complete user-provided master list: 236 named men
 - Redesigned home page around printed-book sales and companion-platform value.
 - Removed Updates and Shipping & Returns from public navigation and sitemap.
 - Clarified that no PDF edition is available.
+
+## V6.2 security and stability update
+
+- Updates and admin pages remain disabled in production and do not load Supabase.
+- `supabase/config.js` is intentionally ignored; copy `config.example.js` only when reactivating Updates.
+- Supabase media hardening and the existing-project migration are documented in `supabase/README.md`.
+- Browser storage failures now show a visible warning.
+- Study-backup imports are size-limited, validated, sanitized, and rolled back on write failure.
+- Run `python tests/static-smoke.py` and `node tests/study-backup-smoke.cjs` before deployment.
