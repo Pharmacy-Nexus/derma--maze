@@ -1,5 +1,5 @@
 window.DM_SITE_CONFIG = Object.freeze({
-  version: '6.0.0',
+  version: '6.2.0',
   production: true,
   canonicalBase: 'https://pharmacy-nexus.github.io/derma-maze/',
   order: {

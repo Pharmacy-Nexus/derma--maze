@@ -1,6 +1,57 @@
 const DM_LANG_KEY = 'dermaMazeLang';
-function dmStorageGet(key,fallback=null){try{return localStorage.getItem(key)??fallback}catch(_){return fallback}}
-function dmStorageSet(key,value){try{localStorage.setItem(key,value)}catch(_){}}
+let dmStorageWarningShown = false;
+
+function dmShowStorageWarning() {
+  if (dmStorageWarningShown || !document.body) return;
+  dmStorageWarningShown = true;
+  const note = document.createElement('div');
+  note.className = 'dm-storage-warning';
+  note.setAttribute('role', 'status');
+  note.textContent = window.currentDMLang === 'en'
+    ? 'Your browser blocked local saving. Progress may not be kept after you close this page.'
+    : 'المتصفح منع الحفظ المحلي؛ قد لا يظل تقدمك محفوظًا بعد إغلاق الصفحة.';
+  document.body.appendChild(note);
+  requestAnimationFrame(() => note.classList.add('visible'));
+  window.setTimeout(() => {
+    note.classList.remove('visible');
+    window.setTimeout(() => note.remove(), 350);
+  }, 6500);
+}
+
+function dmStorageGet(key, fallback = null) {
+  try { return localStorage.getItem(key) ?? fallback; }
+  catch (_) { dmShowStorageWarning(); return fallback; }
+}
+function dmStorageSet(key, value) {
+  try { localStorage.setItem(key, value); return true; }
+  catch (_) { dmShowStorageWarning(); return false; }
+}
+function dmStorageRemove(key) {
+  try { localStorage.removeItem(key); return true; }
+  catch (_) { dmShowStorageWarning(); return false; }
+}
+function dmStorageGetJSON(key, fallback = null) {
+  const raw = dmStorageGet(key, null);
+  if (raw === null) return fallback;
+  try { return JSON.parse(raw); }
+  catch (_) { return fallback; }
+}
+function dmStorageSetJSON(key, value) {
+  try { return dmStorageSet(key, JSON.stringify(value)); }
+  catch (_) { dmShowStorageWarning(); return false; }
+}
+function dmSessionGet(key, fallback = null) {
+  try { return sessionStorage.getItem(key) ?? fallback; }
+  catch (_) { return fallback; }
+}
+function dmSessionSet(key, value) {
+  try { sessionStorage.setItem(key, value); return true; }
+  catch (_) { return false; }
+}
+Object.assign(window, {
+  dmStorageGet, dmStorageSet, dmStorageRemove, dmStorageGetJSON, dmStorageSetJSON,
+  dmSessionGet, dmSessionSet
+});
 const translations = {
   ar: {
     'brand.sub':'PHARMACOTHERAPY','nav.chapters':'الفصول','nav.drugs':'دليل الأدوية','nav.dashboard':'لوحة المذاكرة','nav.inside':'داخل التجربة','nav.free':'قيمة التجربة','nav.lab':'Clinical Lab','nav.preview':'لماذا Derma-Maze؟','nav.updates':'التحديثات','nav.order':'اطلب الكتاب',
@@ -64,14 +115,14 @@ function initMazeLoader(){
   if(!loader){document.body.classList.remove('dm-loading');return;}
   const started=performance.now();
   let seen=false;
-  try{seen=sessionStorage.getItem('dermaMazeLoaderSeen')==='1';}catch(_){seen=false;}
+  seen=dmSessionGet('dermaMazeLoaderSeen','0')==='1';
   const minimum=seen?360:1150;
   const finish=()=>{
     const wait=Math.max(0,minimum-(performance.now()-started));
     window.setTimeout(()=>{
       loader.classList.add('is-hidden');
       document.body.classList.remove('dm-loading');
-      try{sessionStorage.setItem('dermaMazeLoaderSeen','1');}catch(_){}
+      dmSessionSet('dermaMazeLoaderSeen','1');
       window.setTimeout(()=>loader.remove(),650);
     },wait);
   };

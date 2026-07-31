@@ -5,6 +5,11 @@
   const NOTES_KEY = 'dermaMazeNotesV1';
   const TARGET_KEY = 'dermaMazeDailyTargetV1';
   const CONFIG = window.DM_SITE_CONFIG || {};
+  const BACKUP_SCHEMA = 'derma-maze-study-backup';
+  const BACKUP_VERSION = 1;
+  const MAX_NOTES = 500;
+  const MAX_NOTE_LENGTH = 2500;
+  const MAX_DRUG_FAVORITES = 1000;
 
   const chapters = [
     {slug:'intro', number:'01', titleAr:'مقدمة الأمراض الجلدية', titleEn:'Introduction to Dermatology', page:'intro.html', total:45, storageKey:'dermaMazeIntroProgressV1', questionAnchor:'#question-bank'},
@@ -15,15 +20,8 @@
     {slug:'myco', number:'06', titleAr:'الأمراض الجلدية الميكوبكتيرية', titleEn:'Mycobacterial Skin Diseases', page:'myco.html', total:100, storageKey:'dermaMazeMycoProgressV1', questionAnchor:'#question-bank'}
   ];
 
-  const safeParse = (value, fallback) => {
-    try { return JSON.parse(value); } catch (_) { return fallback; }
-  };
-  const readJSON = (key, fallback) => {
-    try { return safeParse(localStorage.getItem(key), fallback); } catch (_) { return fallback; }
-  };
-  const writeJSON = (key, value) => {
-    try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch (_) { return false; }
-  };
+  const readJSON = (key, fallback) => window.dmStorageGetJSON?.(key, fallback) ?? fallback;
+  const writeJSON = (key, value) => window.dmStorageSetJSON?.(key, value) !== false;
   const escapeHTML = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
   const dateKey = (date = new Date()) => {
     const year = date.getFullYear();
@@ -135,9 +133,9 @@
   }
 
   function addNote({chapter, text}) {
-    const clean = String(text || '').trim();
+    const clean = String(text || '').trim().slice(0, MAX_NOTE_LENGTH);
     if (!clean) return null;
-    const notes = getNotes();
+    const notes = getNotes().slice(0, MAX_NOTES - 1);
     const note = {id:`note_${Date.now()}_${Math.random().toString(36).slice(2,7)}`, chapter:chapter || 'general', text:clean, createdAt:Date.now(), updatedAt:Date.now()};
     notes.unshift(note);
     saveNotes(notes);
@@ -146,7 +144,7 @@
   }
 
   function updateNote(id, text) {
-    const clean = String(text || '').trim();
+    const clean = String(text || '').trim().slice(0, MAX_NOTE_LENGTH);
     if (!clean) return false;
     const notes = getNotes();
     const index = notes.findIndex(note => note.id === id);
@@ -201,14 +199,14 @@
   function getDailyTarget() {
     const fallback = Number(CONFIG.study?.defaultDailyTarget) || 20;
     try {
-      const value = Number(localStorage.getItem(TARGET_KEY));
+      const value = Number(window.dmStorageGet?.(TARGET_KEY, ''));
       return Number.isFinite(value) && value >= 1 && value <= 300 ? value : fallback;
     } catch (_) { return fallback; }
   }
 
   function setDailyTarget(value) {
     const safe = Math.min(300, Math.max(1, Number(value) || 20));
-    try { localStorage.setItem(TARGET_KEY, String(safe)); } catch (_) {}
+    window.dmStorageSet?.(TARGET_KEY, String(safe));
     return safe;
   }
 
@@ -248,25 +246,99 @@
     return payload;
   }
 
-  function importData(payload) {
-    if (!payload || payload.schema !== 'derma-maze-study-backup' || !payload.data) throw new Error('Invalid backup');
-    if (payload.data.meta) writeJSON(META_KEY, payload.data.meta);
-    if (Array.isArray(payload.data.notes)) saveNotes(payload.data.notes);
-    if (payload.data.target) setDailyTarget(payload.data.target);
-    if (payload.data.chapters && typeof payload.data.chapters === 'object') {
-      chapters.forEach(chapter => {
-        const value = payload.data.chapters[chapter.storageKey];
-        if (value && typeof value === 'object') writeJSON(chapter.storageKey, value);
-      });
+  function normalizeBackup(payload) {
+    if (!payload || payload.schema !== BACKUP_SCHEMA || payload.version !== BACKUP_VERSION || !payload.data || typeof payload.data !== 'object') {
+      throw new Error('Invalid backup');
     }
-    if (Array.isArray(payload.data.drugFavorites)) writeJSON('dermaMazeDrugFavoritesV1', payload.data.drugFavorites);
+    const allowedChapters = new Set(['general', ...chapters.map(chapter => chapter.slug)]);
+    const rawMeta = payload.data.meta && typeof payload.data.meta === 'object' ? payload.data.meta : {};
+    const studyDays = Array.isArray(rawMeta.studyDays)
+      ? rawMeta.studyDays.filter(day => /^\d{4}-\d{2}-\d{2}$/.test(String(day))).slice(-400)
+      : [];
+    let lastVisited = null;
+    if (rawMeta.lastVisited && typeof rawMeta.lastVisited === 'object') {
+      const chapter = getChapterBySlug(String(rawMeta.lastVisited.slug || ''));
+      if (chapter) {
+        const anchor = String(rawMeta.lastVisited.anchor || chapter.questionAnchor);
+        lastVisited = {
+          slug: chapter.slug,
+          page: chapter.page,
+          anchor: anchor.startsWith('#') ? anchor.slice(0, 120) : chapter.questionAnchor,
+          titleAr: chapter.titleAr,
+          titleEn: chapter.titleEn,
+          timestamp: Number.isFinite(Number(rawMeta.lastVisited.timestamp)) ? Number(rawMeta.lastVisited.timestamp) : null
+        };
+      }
+    }
+    const notes = Array.isArray(payload.data.notes) ? payload.data.notes.slice(0, MAX_NOTES).map((note, index) => {
+      if (!note || typeof note !== 'object') return null;
+      const text = String(note.text || '').trim().slice(0, MAX_NOTE_LENGTH);
+      if (!text) return null;
+      const chapter = allowedChapters.has(String(note.chapter)) ? String(note.chapter) : 'general';
+      const createdAt = Number.isFinite(Number(note.createdAt)) ? Number(note.createdAt) : Date.now();
+      const updatedAt = Number.isFinite(Number(note.updatedAt)) ? Number(note.updatedAt) : createdAt;
+      return {id:String(note.id || `imported_${Date.now()}_${index}`).slice(0, 120), chapter, text, createdAt, updatedAt};
+    }).filter(Boolean) : [];
+    const chapterData = {};
+    const sourceChapters = payload.data.chapters && typeof payload.data.chapters === 'object' ? payload.data.chapters : {};
+    chapters.forEach(chapter => {
+      const raw = sourceChapters[chapter.storageKey];
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return;
+      const answers = {};
+      const entries = raw.answers && typeof raw.answers === 'object' && !Array.isArray(raw.answers) ? Object.entries(raw.answers).slice(0, chapter.total) : [];
+      entries.forEach(([id, answer]) => {
+        if (!answer || typeof answer !== 'object') return;
+        const selected = String(answer.selected || '').slice(0, 8);
+        if (!selected) return;
+        answers[String(id).slice(0, 120)] = {
+          selected,
+          correct: answer.correct === true,
+          updatedAt: Number.isFinite(Number(answer.updatedAt)) ? Number(answer.updatedAt) : Date.now()
+        };
+      });
+      const bookmarks = Array.isArray(raw.bookmarks)
+        ? [...new Set(raw.bookmarks.filter(value => typeof value === 'string').map(value => value.slice(0, 120)))].slice(0, chapter.total)
+        : [];
+      chapterData[chapter.storageKey] = {answers, bookmarks};
+    });
+    const target = Math.min(300, Math.max(1, Number(payload.data.target) || Number(CONFIG.study?.defaultDailyTarget) || 20));
+    const drugFavorites = Array.isArray(payload.data.drugFavorites)
+      ? [...new Set(payload.data.drugFavorites.filter(value => typeof value === 'string').map(value => value.slice(0, 120)))].slice(0, MAX_DRUG_FAVORITES)
+      : [];
+    return {
+      meta:{lastVisited, studyDays, visits:Math.max(0, Math.min(1000000, Number(rawMeta.visits) || 0))},
+      notes, target, chapters:chapterData, drugFavorites
+    };
+  }
+
+  function importData(payload) {
+    const clean = normalizeBackup(payload);
+    const keys = [META_KEY, NOTES_KEY, TARGET_KEY, ...chapters.map(chapter => chapter.storageKey), 'dermaMazeDrugFavoritesV1'];
+    const before = Object.fromEntries(keys.map(key => [key, window.dmStorageGet?.(key, null)]));
+    try {
+      if (!writeJSON(META_KEY, clean.meta)) throw new Error('Storage unavailable');
+      if (!writeJSON(NOTES_KEY, clean.notes)) throw new Error('Storage unavailable');
+      if (!window.dmStorageSet?.(TARGET_KEY, String(clean.target))) throw new Error('Storage unavailable');
+      chapters.forEach(chapter => {
+        const value = clean.chapters[chapter.storageKey];
+        if (value && !writeJSON(chapter.storageKey, value)) throw new Error('Storage unavailable');
+      });
+      if (!writeJSON('dermaMazeDrugFavoritesV1', clean.drugFavorites)) throw new Error('Storage unavailable');
+    } catch (error) {
+      keys.forEach(key => {
+        const value = before[key];
+        if (value === null) window.dmStorageRemove?.(key);
+        else window.dmStorageSet?.(key, value);
+      });
+      throw error;
+    }
     window.dispatchEvent(new CustomEvent('dm-study-imported'));
     return true;
   }
 
   function resetStudyData() {
     const keys = [META_KEY, NOTES_KEY, TARGET_KEY, ...chapters.map(chapter => chapter.storageKey)];
-    keys.forEach(key => { try { localStorage.removeItem(key); } catch (_) {} });
+    keys.forEach(key => window.dmStorageRemove?.(key));
     window.dispatchEvent(new CustomEvent('dm-study-reset'));
   }
 
