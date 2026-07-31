@@ -443,7 +443,7 @@ body.dm-loading{overflow:hidden}
 @media(max-width:620px){.maze-loader-mark{width:106px;height:106px}.maze-loader-wordmark{font-size:14px}.value-card{min-height:280px;padding:26px}.value-card-book{min-height:560px}.value-card-cover{width:72%}.sales-proof{padding:75px 0}.sales-proof-card{padding:31px 22px;border-radius:28px}.sales-proof-copy h2{font-size:43px}.sales-proof-visual{min-height:330px}.ring-one{width:290px;height:290px}.ring-two{width:215px;height:215px}.proof-mark{width:160px;height:160px;border-radius:34px}.proof-mark img{width:66px}.proof-stat{min-width:104px;padding:12px}.proof-stat-a{top:15px}.proof-stat-b{top:115px}.proof-stat-c{left:5px;bottom:18px}.mobile-sales-cta{display:flex}body.home-page{padding-bottom:76px}.faq-item{padding:0 18px}.faq-item summary{font-size:14px}}
 
 
-/* Order section refresh — V6.3.1 */
+/* Order section refresh — V6.3.2 */
 .buy-card{align-items:stretch}
 .buy-copy{padding:58px 58px 58px 64px;position:relative;z-index:2}
 .buy-copy>span{display:inline-flex;align-items:center;gap:10px;width:max-content;padding:11px 14px;border-radius:999px;border:1px solid rgba(217,189,130,.18);background:rgba(217,189,130,.08);font-size:9px;letter-spacing:2px;color:var(--gold);font-weight:900}
