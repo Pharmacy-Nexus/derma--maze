@@ -93,3 +93,23 @@
   .home-page .proof-mark{animation:none!important}
   .sales-book,.sales-book-cover,.sales-book-page img,.sales-preview-thumb{transition:none!important}
 }
+
+
+/* Buy section motion refinement — V6.3.1 */
+.home-page .buy-card{grid-template-columns:.98fr 1.02fr;min-height:640px}
+.home-page .buy-copy:before{inset:10% 0 10% auto}
+.home-page .buy-copy>span,.home-page .buy-copy h2,.home-page .buy-copy>p,.home-page .buy-points,.home-page .buy-order-panel,.home-page .buy-actions,.home-page .order-live-note{transition:transform .75s var(--motion-ease),opacity .75s var(--motion-ease)}
+.home-page .buy-card:not(.motion-visible) .buy-copy>span,.home-page .buy-card:not(.motion-visible) .buy-copy h2,.home-page .buy-card:not(.motion-visible) .buy-copy>p,.home-page .buy-card:not(.motion-visible) .buy-points,.home-page .buy-card:not(.motion-visible) .buy-order-panel,.home-page .buy-card:not(.motion-visible) .buy-actions,.home-page .buy-card:not(.motion-visible) .order-live-note{opacity:0;transform:translateX(32px)}
+.home-page .buy-card.motion-visible .buy-copy>span{transition-delay:.1s}
+.home-page .buy-card.motion-visible .buy-copy h2{transition-delay:.18s}
+.home-page .buy-card.motion-visible .buy-copy>p{transition-delay:.26s}
+.home-page .buy-card.motion-visible .buy-points{transition-delay:.34s}
+.home-page .buy-card.motion-visible .buy-order-panel{transition-delay:.42s}
+.home-page .buy-card.motion-visible .buy-actions{transition-delay:.5s}
+.home-page .buy-card.motion-visible .order-live-note{transition-delay:.58s}
+@media(max-width:980px){
+  .home-page .buy-card{grid-template-columns:1fr}
+  .home-page .buy-art.motion-book-stage{order:1}
+  .home-page .buy-copy{order:0}
+  .home-page .buy-copy:before{display:none}
+}
