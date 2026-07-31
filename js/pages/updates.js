@@ -1,32 +1,166 @@
-
 (() => {
+  'use strict';
+
   const cfg = window.DM_SUPABASE || {};
-  const configured = cfg.url && cfg.anonKey && !cfg.url.includes('PASTE_') && !cfg.anonKey.includes('PASTE_');
-  const db = configured && window.supabase ? window.supabase.createClient(cfg.url, cfg.anonKey) : null;
+  const configured = Boolean(cfg.url && cfg.anonKey && !String(cfg.url).includes('PASTE_') && !String(cfg.anonKey).includes('PASTE_'));
+  const db = configured && window.supabase ? window.supabase.createClient(cfg.url, cfg.anonKey, {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+    global: { headers: { 'X-Client-Info': 'derma-maze-updates/6.3.2' } }
+  }) : null;
+  const BUCKET = 'updates-media';
+  const PAGE_SIZE = 36;
+  const PUBLIC_FIELDS = 'id,slug,status,category,featured,version,chapter,title_ar,title_en,summary_ar,summary_en,content_ar,content_en,cover_image,images,tags,published_at,created_at,updated_at';
+
   const categoryLabels = {
     all:{ar:'الكل',en:'All'}, correction:{ar:'تصحيح',en:'Correction'}, content:{ar:'إضافة محتوى',en:'Content'}, treatment:{ar:'تحديث علاجي',en:'Treatment'}, questions:{ar:'أسئلة جديدة',en:'Questions'}, book:{ar:'أخبار الكتاب',en:'Book news'}, website:{ar:'تحديث الموقع',en:'Website'}
   };
-  let updates=[], active='all', search='';
-  const el=id=>document.getElementById(id);
-  const escapeHTML=value=>String(value??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
-  function lang(){return window.currentDMLang==='en'?'en':'ar'}
-  function text(item,key){return item[`${key}_${lang()}`] || item[`${key}_en`] || item[`${key}_ar`] || ''}
-  function dateText(value){if(!value)return '';return new Intl.DateTimeFormat(lang()==='ar'?'ar-EG':'en-GB',{day:'numeric',month:'short',year:'numeric'}).format(new Date(value))}
-  function parseContent(raw){
-    const lines=String(raw||'').split(/\r?\n/);let html='',list=false;
-    const close=()=>{if(list){html+='</ul>';list=false}};
-    for(const line of lines){const t=line.trim();if(!t){close();continue}if(t.startsWith('## ')){close();html+=`<h3>${escapeHTML(t.slice(3))}</h3>`}else if(t.startsWith('- ')){if(!list){html+='<ul>';list=true}html+=`<li>${escapeHTML(t.slice(2))}</li>`}else{close();html+=`<p>${escapeHTML(t)}</p>`}}close();return html;
+  let updates = [];
+  let active = 'all';
+  let search = '';
+  const signedCache = new Map();
+  const el = id => document.getElementById(id);
+  const escapeHTML = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+  const lang = () => window.currentDMLang === 'en' ? 'en' : 'ar';
+  const text = (item, key) => item[`${key}_${lang()}`] || item[`${key}_en`] || item[`${key}_ar`] || '';
+
+  function storagePath(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    let path = raw;
+    if (/^https?:\/\//i.test(raw)) {
+      try {
+        const url = new URL(raw);
+        const markers = ['/storage/v1/object/public/updates-media/', '/storage/v1/object/sign/updates-media/'];
+        const marker = markers.find(item => url.pathname.includes(item));
+        if (!marker) return '';
+        path = decodeURIComponent(url.pathname.split(marker)[1] || '');
+      } catch (_) { return ''; }
+    }
+    path = path.replace(/^\/+/, '');
+    return path && !path.includes('..') && path.length <= 500 && /^[a-zA-Z0-9/_.,-]+$/.test(path) ? path : '';
   }
-  function media(item, cls=''){const src=item.cover_image || (Array.isArray(item.images)&&item.images[0]) || '';return src?`<img class="${cls}" src="${escapeHTML(src)}" alt="${escapeHTML(text(item,'title'))}" loading="lazy">`:''}
-  function meta(item){const cat=categoryLabels[item.category]||categoryLabels.content;return `<div class="update-meta"><span>${escapeHTML(cat[lang()])}</span>${item.version?`<span>${escapeHTML(item.version)}</span>`:''}<span>${escapeHTML(dateText(item.published_at||item.created_at))}</span>${item.chapter?`<span>${escapeHTML(item.chapter)}</span>`:''}</div>`}
-  function openUpdate(id){const item=updates.find(x=>x.id===id);if(!item)return;const images=(item.images||[]).filter(Boolean);el('updateDialogContent').innerHTML=`${media(item,'update-dialog-cover')}<div class="update-dialog-body"><div class="updates-label">${escapeHTML((categoryLabels[item.category]||categoryLabels.content)[lang()])}</div><h2>${escapeHTML(text(item,'title'))}</h2>${meta(item)}<div class="update-rich">${parseContent(text(item,'content'))}</div>${images.length?`<div class="update-gallery">${images.map(src=>`<img src="${escapeHTML(src)}" alt="" loading="lazy">`).join('')}</div>`:''}</div>`;el('updateDialog').showModal();}
-  window.dmOpenUpdate=openUpdate;
-  function filtered(){const q=search.trim().toLowerCase();return updates.filter(u=>(active==='all'||u.category===active)&&(!q||[u.title_ar,u.title_en,u.summary_ar,u.summary_en,u.chapter,u.version,(u.tags||[]).join(' ')].join(' ').toLowerCase().includes(q)))}
-  function renderFilters(){const cats=['all',...new Set(updates.map(u=>u.category).filter(Boolean))];el('updatesFilters').innerHTML=cats.map(c=>`<button class="updates-filter ${c===active?'active':''}" data-category="${escapeHTML(c)}">${escapeHTML((categoryLabels[c]||{ar:c,en:c})[lang()])}</button>`).join('');el('updatesFilters').querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.dataset.category;render()})}
-  function render(){renderFilters();const data=filtered();el('updatesCount').textContent=String(updates.length).padStart(2,'0');const featured=data.find(u=>u.featured)||data[0];const feature=el('updatesFeatured');if(featured){feature.classList.add('visible');feature.innerHTML=`<div class="updates-featured-media">${media(featured)}</div><div class="updates-featured-body"><div class="updates-label">${escapeHTML((categoryLabels[featured.category]||categoryLabels.content)[lang()])}</div><h2>${escapeHTML(text(featured,'title'))}</h2><p>${escapeHTML(text(featured,'summary'))}</p>${meta(featured)}<button class="update-open" onclick="dmOpenUpdate('${featured.id}')">${lang()==='ar'?'اقرأ التحديث':'Read update'} ↗</button></div>`}else{feature.classList.remove('visible');feature.innerHTML=''}
-    const rest=featured?data.filter(u=>u.id!==featured.id):data;el('updatesGrid').innerHTML=rest.map(u=>`<article class="update-card"><div class="update-card-media">${media(u)}</div><div class="update-card-body"><div class="updates-label">${escapeHTML((categoryLabels[u.category]||categoryLabels.content)[lang()])}</div><h3>${escapeHTML(text(u,'title'))}</h3><p>${escapeHTML(text(u,'summary'))}</p>${meta(u)}<button class="update-open" onclick="dmOpenUpdate('${u.id}')">${lang()==='ar'?'التفاصيل':'Details'} ↗</button></div></article>`).join('');el('updatesEmpty').classList.toggle('visible',data.length===0);}
-  function showConfigState(){updates=[{id:'setup',category:'website',version:'SETUP',chapter:'Derma-Maze',featured:true,published_at:new Date().toISOString(),title_ar:'مركز التحديثات جاهز للربط',title_en:'The update center is ready to connect',summary_ar:'الصفحة والتصميم جاهزان. بعد ربط Supabase ستظهر التحديثات الحقيقية هنا تلقائيًا.',summary_en:'The page and design are ready. Once Supabase is connected, real updates will appear here automatically.',content_ar:'## الخطوة المتبقية\n- إنشاء مشروع Supabase.\n- تشغيل ملف supabase/setup.sql.\n- وضع رابط المشروع والمفتاح العام داخل supabase/config.js.\n- تسجيل الدخول من صفحة الإدارة وإضافة أول تحديث.',content_en:'## Remaining setup\n- Create a Supabase project.\n- Run supabase/setup.sql.\n- Add the project URL and publishable key to supabase/config.js.\n- Sign in through the admin page and create the first update.'}];render();}
-  async function load(){el('updatesLoader').style.display='block';if(!db){el('updatesLoader').style.display='none';showConfigState();return}const {data,error}=await db.from('derma_updates').select('*').eq('status','published').lte('published_at',new Date().toISOString()).order('published_at',{ascending:false});el('updatesLoader').style.display='none';if(error){console.error(error);showConfigState();return}updates=data||[];render();}
-  document.addEventListener('DOMContentLoaded',()=>{el('updatesSearch').addEventListener('input',e=>{search=e.target.value;render()});el('updateDialogClose').onclick=()=>el('updateDialog').close();el('updateDialog').addEventListener('click',e=>{if(e.target===el('updateDialog'))el('updateDialog').close()});load()});
-  window.addEventListener('dm-language-change',()=>{el('updatesSearch').placeholder=lang()==='ar'?'ابحث داخل التحديثات':'Search updates';render()});
+
+  async function mediaUrl(value) {
+    const path = storagePath(value);
+    if (!path || !db) return '';
+    if (signedCache.has(path)) return signedCache.get(path);
+    const { data, error } = await db.storage.from(BUCKET).createSignedUrl(path, 3600);
+    const result = error ? '' : data?.signedUrl || '';
+    signedCache.set(path, result);
+    return result;
+  }
+
+  function dateText(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return new Intl.DateTimeFormat(lang() === 'ar' ? 'ar-EG' : 'en-GB', {day:'numeric',month:'short',year:'numeric'}).format(date);
+  }
+
+  function parseContent(raw) {
+    const lines = String(raw || '').split(/\r?\n/);
+    let html = '';
+    let list = false;
+    const close = () => { if (list) { html += '</ul>'; list = false; } };
+    for (const line of lines) {
+      const value = line.trim();
+      if (!value) { close(); continue; }
+      if (value.startsWith('## ')) { close(); html += `<h3>${escapeHTML(value.slice(3))}</h3>`; }
+      else if (value.startsWith('- ')) { if (!list) { html += '<ul>'; list = true; } html += `<li>${escapeHTML(value.slice(2))}</li>`; }
+      else { close(); html += `<p>${escapeHTML(value)}</p>`; }
+    }
+    close();
+    return html;
+  }
+
+  function meta(item) {
+    const category = categoryLabels[item.category] || categoryLabels.content;
+    return `<div class="update-meta"><span>${escapeHTML(category[lang()])}</span>${item.version ? `<span>${escapeHTML(item.version)}</span>` : ''}<span>${escapeHTML(dateText(item.published_at || item.created_at))}</span>${item.chapter ? `<span>${escapeHTML(item.chapter)}</span>` : ''}</div>`;
+  }
+
+  async function media(item, className = '') {
+    const source = item.cover_image || (Array.isArray(item.images) && item.images[0]) || '';
+    const src = await mediaUrl(source);
+    return src ? `<img class="${escapeHTML(className)}" src="${escapeHTML(src)}" alt="${escapeHTML(text(item, 'title'))}" loading="lazy" referrerpolicy="no-referrer">` : '';
+  }
+
+  async function openUpdate(id) {
+    const item = updates.find(record => record.id === id);
+    if (!item) return;
+    const images = Array.isArray(item.images) ? item.images.map(storagePath).filter(Boolean).slice(0, 20) : [];
+    const cover = await media(item, 'update-dialog-cover');
+    const galleryUrls = (await Promise.all(images.map(mediaUrl))).filter(Boolean);
+    el('updateDialogContent').innerHTML = `${cover}<div class="update-dialog-body"><div class="updates-label">${escapeHTML((categoryLabels[item.category] || categoryLabels.content)[lang()])}</div><h2>${escapeHTML(text(item, 'title'))}</h2>${meta(item)}<div class="update-rich">${parseContent(text(item, 'content'))}</div>${galleryUrls.length ? `<div class="update-gallery">${galleryUrls.map(src => `<img src="${escapeHTML(src)}" alt="" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>` : ''}</div>`;
+    el('updateDialog').showModal();
+  }
+
+  function filtered() {
+    const query = search.trim().toLocaleLowerCase();
+    return updates.filter(item => {
+      if (active !== 'all' && item.category !== active) return false;
+      if (!query) return true;
+      return [item.title_ar,item.title_en,item.summary_ar,item.summary_en,item.chapter,item.version,...(item.tags || [])]
+        .join(' ').toLocaleLowerCase().includes(query);
+    });
+  }
+
+  function renderFilters() {
+    const categories = ['all', ...new Set(updates.map(item => item.category).filter(Boolean))];
+    const container = el('updatesFilters');
+    container.innerHTML = categories.map(category => `<button class="updates-filter ${category === active ? 'active' : ''}" type="button" data-category="${escapeHTML(category)}">${escapeHTML((categoryLabels[category] || {ar:category,en:category})[lang()])}</button>`).join('');
+  }
+
+  async function render() {
+    renderFilters();
+    const data = filtered();
+    el('updatesCount').textContent = String(updates.length).padStart(2, '0');
+    const featured = data.find(item => item.featured) || data[0];
+    const feature = el('updatesFeatured');
+    if (featured) {
+      feature.classList.add('visible');
+      feature.innerHTML = `<div class="updates-featured-media">${await media(featured)}</div><div class="updates-featured-body"><div class="updates-label">${escapeHTML((categoryLabels[featured.category] || categoryLabels.content)[lang()])}</div><h2>${escapeHTML(text(featured, 'title'))}</h2><p>${escapeHTML(text(featured, 'summary'))}</p>${meta(featured)}<button class="update-open" type="button" data-update-id="${escapeHTML(featured.id)}">${lang() === 'ar' ? 'اقرأ التحديث' : 'Read update'} ↗</button></div>`;
+    } else {
+      feature.classList.remove('visible');
+      feature.replaceChildren();
+    }
+    const rest = featured ? data.filter(item => item.id !== featured.id) : data;
+    const cards = await Promise.all(rest.map(async item => `<article class="update-card"><div class="update-card-media">${await media(item)}</div><div class="update-card-body"><div class="updates-label">${escapeHTML((categoryLabels[item.category] || categoryLabels.content)[lang()])}</div><h3>${escapeHTML(text(item, 'title'))}</h3><p>${escapeHTML(text(item, 'summary'))}</p>${meta(item)}<button class="update-open" type="button" data-update-id="${escapeHTML(item.id)}">${lang() === 'ar' ? 'التفاصيل' : 'Details'} ↗</button></div></article>`));
+    el('updatesGrid').innerHTML = cards.join('');
+    el('updatesEmpty').classList.toggle('visible', data.length === 0);
+  }
+
+  function showConfigState() {
+    el('updatesEmpty').classList.add('visible');
+    el('updatesEmpty').textContent = lang() === 'ar' ? 'صفحة التحديثات غير مفعلة حاليًا.' : 'Updates are not enabled at the moment.';
+  }
+
+  async function load() {
+    el('updatesLoader').style.display = 'block';
+    if (!db) { el('updatesLoader').style.display = 'none'; showConfigState(); return; }
+    const { data, error } = await db.from('derma_updates').select(PUBLIC_FIELDS)
+      .eq('status', 'published').lte('published_at', new Date().toISOString())
+      .order('published_at', { ascending: false }).range(0, PAGE_SIZE - 1);
+    el('updatesLoader').style.display = 'none';
+    if (error) { console.warn('Updates load failed:', error.message || 'Unknown error'); showConfigState(); return; }
+    updates = data || [];
+    await render();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    el('updatesSearch')?.addEventListener('input', event => { search = event.target.value; render(); });
+    el('updatesFilters')?.addEventListener('click', event => {
+      const button = event.target.closest('[data-category]');
+      if (!button) return;
+      active = button.dataset.category;
+      render();
+    });
+    document.addEventListener('click', event => {
+      const button = event.target.closest('[data-update-id]');
+      if (button) openUpdate(button.dataset.updateId);
+    });
+    el('updateDialogClose')?.addEventListener('click', () => el('updateDialog').close());
+    el('updateDialog')?.addEventListener('click', event => { if (event.target === el('updateDialog')) el('updateDialog').close(); });
+    load();
+  });
+  window.addEventListener('dm-language-change', render);
 })();
